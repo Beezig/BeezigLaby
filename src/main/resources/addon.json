@@ -1,5 +1,5 @@
 {
-  "uuid": "bba224a2-0bff-4913-b042-27ca3b60973f", // Leave blank as per LM Docs
+  "uuid": "%uuid%",
   "name": "Beezig",
   "mainClass": "tk.roccodev.beezig.laby.LabyMain"
 }
