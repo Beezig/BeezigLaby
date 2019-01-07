@@ -21,13 +21,15 @@ compileJava {
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
 }
-
+import org.apache.tools.ant.taskdefs.condition.Os
 sourceSets {
     main {
         java {
             srcDirs 'src/main/java'
             srcDirs 'Beezig/src'
-            srcDirs 'Beezig/src/submodules/src/main/java'
+            if(Os.isFamily(Os.FAMILY_WINDOWS)) {
+                srcDirs 'Beezig/src/submodules/src/main/java'
+            }
         }
 
         resources {
@@ -55,7 +57,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     runtime files('Beezig/lang')
     runtime files('Beezig/core/messages')
-    
+
     compile group: 'net.java.dev.jna', name: 'jna', version: '4.5.0'
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.1'
