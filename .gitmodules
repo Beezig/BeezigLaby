@@ -1,0 +1,3 @@
+[submodule "Beezig"]
+	path = Beezig
+	url = https://github.com/Beezig/Beezig.git
