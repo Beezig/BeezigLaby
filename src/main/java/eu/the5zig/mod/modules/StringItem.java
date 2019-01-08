@@ -16,7 +16,6 @@
 
 package eu.the5zig.mod.modules;
 
-import eu.the5zig.mod.The5zigAPI;
 import eu.the5zig.mod.render.RenderLocation;
 import net.labymod.ingamegui.ModuleCategory;
 import net.labymod.ingamegui.moduletypes.SimpleModule;
@@ -25,8 +24,8 @@ import net.labymod.settings.elements.ControlElement;
 import net.labymod.settings.elements.SettingsElement;
 import net.labymod.utils.Material;
 import tk.roccodev.beezig.Log;
+import tk.roccodev.beezig.laby.LabyMain;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +38,6 @@ import java.util.Map;
 public class StringItem extends SimpleModule {
 
 	public static ModuleCategory HIVE;
-	private Map<String, String> attributes = new HashMap<>();
 	private List<SettingsElement> subs = new ArrayList<>();
 	private ModuleItemProperties props;
 	private String key;
@@ -118,7 +116,13 @@ public class StringItem extends SimpleModule {
 
 	@Override
 	public String getDisplayValue() {
-		return getValue(false).toString();
+		try {
+			return getValue(false).toString();
+		} catch(Exception e) {
+			System.out.println("Exception occurred while rendering " + key);
+			e.printStackTrace();
+			return "Error?";
+		}
 	}
 
 	@Override
@@ -134,7 +138,7 @@ public class StringItem extends SimpleModule {
 	@Override
 	public void loadSettings() {
 		registerSettings();
-		setAttributes(attributes);
+		LabyMain.SELF.saveConfig();
 	}
 
 	@Override
@@ -144,15 +148,18 @@ public class StringItem extends SimpleModule {
 	}
 
 	void addAttribute(String key, String attr) {
-		attributes.put(key, attr);
+		setAttribute(key, attr);
 		subs.add(new BooleanElement(this, new ControlElement.IconData(Material.LEVER),
-				Log.t("modules.item." + this.key + "." + key), key));
+				Log.t("modules.item." + this.key + "." + key), key).addCallback(b -> {
+					LabyMain.SELF.getConfig().addProperty("bzg_mdl_" + StringItem.this.key + "_" + key,
+							Boolean.toString(b));
+					LabyMain.SELF.saveConfig();
+				}));
 	}
 
 	public void registerSettings() {}
 
 	public ModuleItemProperties getProperties() {
-
 		return props;
 	}
 

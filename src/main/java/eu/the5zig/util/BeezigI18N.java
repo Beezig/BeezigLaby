@@ -10,12 +10,18 @@ public class BeezigI18N {
 
     public static void init() {
         Locale currentLocale = Locale.getDefault();
-        strings = ResourceBundle.getBundle("language", currentLocale);
+        try {
+            strings = ResourceBundle.getBundle("language", currentLocale);
+        } catch(Exception e) {
+            strings = ResourceBundle.getBundle("language", Locale.US);
+        }
         System.out.println("Strings\n\n\n" + strings + "\n\n\n");
     }
 
-    public static String s(String key) {
+    public static String s(String key, Object... format) {
+        if(format.length == 0)
         return strings.getString(key);
+        else return String.format(strings.getString(key), format);
     }
 
 }

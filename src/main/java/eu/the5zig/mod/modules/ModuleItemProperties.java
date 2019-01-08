@@ -17,9 +17,7 @@
 package eu.the5zig.mod.modules;
 
 import eu.the5zig.mod.config.IConfigItem;
-
-import java.util.HashMap;
-import java.util.Map;
+import tk.roccodev.beezig.laby.LabyMain;
 
 public class  ModuleItemProperties {
 
@@ -32,8 +30,11 @@ public class  ModuleItemProperties {
 
 
 	public void addSetting(String key, boolean defaultValue) {
-		item.addAttribute(key, item.getAttribute(key, Boolean.toString(defaultValue)));
-		System.out.println("Attr size for " + key + ": " + item.getAttributes().size());
+		String pkey = "bzg_mdl_" + item.getName() + "_" + key;
+		String apply = LabyMain.SELF.getConfig().has(pkey)
+				? Boolean.toString(LabyMain.SELF.getConfig().get(pkey).getAsBoolean())
+				: Boolean.toString(defaultValue);
+		item.addAttribute(key, apply);
 	}
 
 	/**
@@ -45,7 +46,11 @@ public class  ModuleItemProperties {
 	 * @see #getSetting(String)
 	 */
 	public <E extends Enum> void addSetting(String key, E defaultValue, Class<E> enumClass) {
-		item.addAttribute(key,  item.getAttribute(key, defaultValue.toString()));
+		String pkey = "bzg_mdl_" + item.getName() + "_" + key;
+		String apply = LabyMain.SELF.getConfig().has(pkey)
+				? LabyMain.SELF.getConfig().get(pkey).getAsString()
+				: defaultValue.toString();
+		item.addAttribute(key, apply);
 	}
 
 	public IConfigItem getSetting(String key) {

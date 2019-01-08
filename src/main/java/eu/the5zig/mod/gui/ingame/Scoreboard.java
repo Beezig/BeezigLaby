@@ -21,15 +21,27 @@ import java.util.HashMap;
 /**
  * A class that represents a sidebar scoreboard.
  */
-public interface Scoreboard {
+public class Scoreboard {
+
+	private String title;
+	private HashMap<String, Integer> lines;
+
+	public Scoreboard(String title, HashMap<String, Integer> lines) {
+		this.title = title;
+		this.lines = lines;
+	}
 
 	/**
 	 * @return the title of the scoreboard.
 	 */
-	String getTitle();
+	public String getTitle() {
+		return title;
+	}
 
 	/**
 	 * @return a map, containing all scores together with their name.
 	 */
-	HashMap<String, Integer> getLines();
+	public HashMap<String, Integer> getLines() {
+		return lines;
+	}
 }

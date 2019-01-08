@@ -28,8 +28,14 @@ import eu.the5zig.mod.server.ServerInstance;
 import eu.the5zig.mod.util.NetworkPlayerInfo;
 import eu.the5zig.mod.util.PlayerGameMode;
 import eu.the5zig.util.BeezigI18N;
+import net.labymod.core.LabyModCore;
+import net.minecraft.scoreboard.Score;
+import net.minecraft.scoreboard.ScoreObjective;
+import net.minecraft.util.ResourceLocation;
 import tk.roccodev.beezig.laby.LabyMain;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -166,7 +172,7 @@ public class ModAPI {
 	 * @return The formatted, translated value of the key.
 	 */
 	public String translate(String key, Object... format) {
-		return BeezigI18N.s(key);
+		return BeezigI18N.s(key, format);
 	}
 
 	/**
@@ -182,7 +188,7 @@ public class ModAPI {
 	 * @param message the message that should be sent.
 	 */
 	public void sendPlayerMessage(String message) {
-
+		LabyModCore.getMinecraft().getPlayer().sendChatMessage(message);
 	}
 
 	/**
@@ -251,7 +257,12 @@ public class ModAPI {
 	 * @since 1.0.3
 	 */
 	public List<NetworkPlayerInfo> getServerPlayers() {
-        return null;
+        List<NetworkPlayerInfo> result = new ArrayList<>();
+        for(net.minecraft.client.network.NetworkPlayerInfo npi :
+                LabyModCore.getMinecraft().getConnection().getPlayerInfoMap()) {
+            result.add(new NetworkPlayerInfo(npi));
+        }
+	    return result;
 	}
 
 
@@ -266,14 +277,25 @@ public class ModAPI {
 
 
 	public Scoreboard getSideScoreboard() {
-		return null;
+        net.minecraft.scoreboard.Scoreboard s = LabyModCore.getMinecraft().getWorld().getScoreboard();
+        if(s == null) return null;
+        ScoreObjective obj = s.getObjectiveInDisplaySlot(1);
+        if(obj == null) return null;
+        HashMap<String, Integer> lines = new HashMap<>();
+        for(Score score : s.getSortedScores(obj)) {
+            lines.put(score.getPlayerName(), score.getScorePoints());
+        }
+
+        return new Scoreboard(obj.getDisplayName(), lines);
 	}
 
 
-	public void playSound(String sound, float pitch) {}
+	public void playSound(String sound, float pitch) {
+		LabyModCore.getMinecraft().playSound(new ResourceLocation(sound), pitch);
+	}
 
 	public ItemStack getItemInMainHand() {
-	    return null;
+	    return new ItemStack(LabyModCore.getMinecraft().getMainHandItem());
     }
 
 

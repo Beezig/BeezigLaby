@@ -18,55 +18,69 @@ package eu.the5zig.mod.gui.ingame;
 
 import java.util.List;
 
-public interface ItemStack {
+public class ItemStack {
+
+	private net.minecraft.item.ItemStack in;
+
+	public ItemStack(net.minecraft.item.ItemStack in) {
+		this.in = in;
+	}
 
 	/**
 	 * @return the amount of items in this stack
 	 */
-	int getAmount();
+	public int getAmount() {
+		return in.stackSize;
+	}
 
 	/**
 	 * @return the maximum durability of the ItemStack.
 	 */
-	int getMaxDurability();
+	public int getMaxDurability() {
+		return in.getMaxDamage();
+	}
 
 	/**
 	 * @return the current durability of the ItemStack.
 	 */
-	int getCurrentDurability();
+	public int getCurrentDurability() {
+		return in.getItemDamage();
+	}
 
 	/**
 	 * @return the resource key of the ItemStack.
 	 */
-	String getKey();
+	public String getKey() {
+		return in.getUnlocalizedName();
+	}
 
 	/**
 	 * @return the display name of the ItemStack.
 	 */
-	String getDisplayName();
+	public String getDisplayName() {
+		return in.getDisplayName();
+	}
 
 	/**
 	 * @return the lore of the ItemStack.
 	 */
-	List<String> getLore();
+	public List<String> getLore() {
+		return null;
+	}
 
 	/**
 	 * @return the food regeneration amount of this item or {@code 0}, if this item is not a food item.
 	 */
-	int getHealAmount();
+	public int getHealAmount() {
+		return 0;
+	}
 
 	/**
 	 * @return the food saturation of this item or {@code 0}, if this item is not a food item.
 	 */
-	float getSaturationModifier();
+	float getSaturationModifier() {
+		return 0f;
+	}
 
-	/**
-	 * Renders the ItemStack to the screen at given coordinates.
-	 *
-	 * @param x                     the x-position of the ItemStack.
-	 * @param y                     the y-position of the ItemStack.
-	 * @param withGenericAttributes true, of the ItemStack should be rendered with generic attributes, indicated by small numbers.
-	 */
-	void render(int x, int y, boolean withGenericAttributes);
 
 }
