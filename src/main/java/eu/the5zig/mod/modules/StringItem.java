@@ -25,6 +25,7 @@ import net.labymod.settings.elements.SettingsElement;
 import net.labymod.utils.Material;
 import tk.roccodev.beezig.Log;
 import tk.roccodev.beezig.laby.LabyMain;
+import tk.roccodev.beezig.laby.categories.ModuleCategories;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -102,10 +103,10 @@ public class StringItem extends SimpleModule {
 	 */
 	protected Object getValue(boolean dummy) {return 0;}
 
-
-	@Override
+    @Override
 	public ModuleCategory getCategory() {
-		return HIVE;
+        ModuleCategories cat = ModuleCategories.get(getCategoryKey());
+        return cat.getCategory();
 	}
 
 
@@ -137,13 +138,17 @@ public class StringItem extends SimpleModule {
 
 	@Override
 	public void loadSettings() {
-		registerSettings();
 		LabyMain.SELF.saveConfig();
 	}
+
+	protected String getCategoryKey() {
+	    return key;
+    }
 
 	@Override
 	public void fillSubSettings(List<SettingsElement> settingsElements) {
 		super.fillSubSettings(settingsElements);
+		registerSettings();
 		settingsElements.addAll(subs);
 	}
 

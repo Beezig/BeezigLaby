@@ -14,6 +14,7 @@ import net.labymod.settings.elements.ControlElement;
 import net.labymod.settings.elements.SettingsElement;
 import net.labymod.utils.Material;
 import tk.roccodev.beezig.BeezigMain;
+import tk.roccodev.beezig.laby.categories.ModuleCategories;
 import tk.roccodev.beezig.laby.evt.LabyEventListener;
 import tk.roccodev.beezig.laby.evt.LabyForgeListener;
 
@@ -35,8 +36,7 @@ public class LabyMain extends LabyModAddon {
         LABY.registerForgeListener(new LabyForgeListener());
         LabyEventListener.init();
         LABY.registerServerSupport(this, new LabyHive());
-        StringItem.HIVE = new ModuleCategory("The Hive", true, new ControlElement.IconData(Material.GLOWSTONE_DUST));
-        ModuleCategoryRegistry.loadCategory(StringItem.HIVE);
+        ModuleCategories.init();
         The5zigAPI.getAPI().getPluginManager().registerListener(null, INSTANCE);
         GameListenerRegistry.loadPatterns();
     }
