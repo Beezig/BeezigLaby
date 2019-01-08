@@ -21,6 +21,7 @@ import eu.the5zig.mod.event.Event;
 import eu.the5zig.mod.event.EventHandler;
 
 import java.lang.reflect.Method;
+import java.net.URLClassLoader;
 import java.util.*;
 
 public class PluginManager {
@@ -106,5 +107,13 @@ public class PluginManager {
 		}
 	}
 
+	public Class getClassByName(String name, URLClassLoader ignored) {
+		try {
+			return Class.forName(name);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 }
