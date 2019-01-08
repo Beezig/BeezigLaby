@@ -15,7 +15,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 version = "1.0"
 group= "tk.roccodev.beezig-laby" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Beezig"
+archivesBaseName = "BeezigLaby"
 
 compileJava {
     sourceCompatibility = '1.8'
@@ -36,8 +36,10 @@ sourceSets {
             srcDirs 'src/main/resources'
             srcDirs 'Beezig/src/core/messages'
             srcDirs 'Beezig/src/lang'
+            srcDirs 'Beezig/src/libraries'
         }
     }
+
 }
 
 minecraft {
@@ -55,8 +57,6 @@ minecraft {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    runtime files('Beezig/lang')
-    runtime files('Beezig/core/messages')
 
     compile group: 'net.java.dev.jna', name: 'jna', version: '4.5.0'
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
@@ -67,6 +67,7 @@ dependencies {
 
 processResources
         {
+
             // this will ensure that this task is redone when the versions change.
             inputs.property "version", project.version
             inputs.property "mcversion", project.minecraft.version
@@ -83,4 +84,5 @@ processResources
             from(sourceSets.main.resources.srcDirs) {
                 exclude 'mcmod.info'
             }
+
         }
