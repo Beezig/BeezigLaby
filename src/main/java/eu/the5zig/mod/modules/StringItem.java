@@ -17,11 +17,15 @@
 package eu.the5zig.mod.modules;
 
 import eu.the5zig.mod.render.RenderLocation;
+import net.labymod.gui.elements.DropDownMenu;
 import net.labymod.ingamegui.ModuleCategory;
+import net.labymod.ingamegui.ModuleConfig;
 import net.labymod.ingamegui.moduletypes.SimpleModule;
 import net.labymod.settings.elements.BooleanElement;
 import net.labymod.settings.elements.ControlElement;
+import net.labymod.settings.elements.DropDownElement;
 import net.labymod.settings.elements.SettingsElement;
+import net.labymod.utils.Consumer;
 import net.labymod.utils.Material;
 import tk.roccodev.beezig.Log;
 import tk.roccodev.beezig.laby.LabyMain;
@@ -148,7 +152,6 @@ public class StringItem extends SimpleModule {
 	@Override
 	public void fillSubSettings(List<SettingsElement> settingsElements) {
 		super.fillSubSettings(settingsElements);
-		registerSettings();
 		settingsElements.addAll(subs);
 	}
 
@@ -160,7 +163,22 @@ public class StringItem extends SimpleModule {
 							Boolean.toString(b));
 					LabyMain.SELF.saveConfig();
 				}));
+
 	}
+
+	void addAttributeEnum(String key, String attr, String[] en) {
+	    setAttribute(key, attr);
+	    String disp = Log.t("modules.item." + this.key + "." + key);
+	    DropDownMenu<String> menu = new DropDownMenu<String>(disp, 0, 0, 0, 0).fill(en);
+	    menu.setSelected(attr);
+	    DropDownElement<String> elem = new DropDownElement<>(disp, menu);
+        elem.setChangeListener(s -> {
+            setAttribute(key, s);
+            LabyMain.SELF.getConfig().addProperty("bzg_mdl_" + StringItem.this.key + "_" + key, s);
+            LabyMain.SELF.saveConfig();
+        });
+	    subs.add(elem);
+    }
 
 	public void registerSettings() {}
 

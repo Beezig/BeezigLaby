@@ -29,6 +29,7 @@ import eu.the5zig.mod.util.NetworkPlayerInfo;
 import eu.the5zig.mod.util.PlayerGameMode;
 import eu.the5zig.util.BeezigI18N;
 import net.labymod.core.LabyModCore;
+import net.labymod.main.Source;
 import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.util.ResourceLocation;
@@ -51,7 +52,7 @@ public class ModAPI {
 	 * @return the version of the 5zig mod.
 	 */
 	public String getModVersion() {
-		return "LabyMod";
+		return Source.ABOUT_VERSION;
 	}
 	/**
 	 * @return the version of Minecraft.
@@ -94,6 +95,7 @@ public class ModAPI {
 		    item.setKey(key);
 		    item.setSortingId(sortingCount++);
 			LabyMain.LABY.registerModule(item);
+			item.registerSettings();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -140,17 +142,17 @@ public class ModAPI {
 		return new Formatting() {
 			@Override
 			public String getPrefixFormatting() {
-				return "§f";
+				return "§r";
 			}
 
 			@Override
 			public String getMainFormatting() {
-				return "§f";
+				return "§r";
 			}
 
 			@Override
 			public String getBracketFormatting() {
-				return "§f";
+				return "§r";
 			}
 		};
 	}

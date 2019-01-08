@@ -19,9 +19,16 @@ package eu.the5zig.mod.modules;
 import eu.the5zig.mod.config.IConfigItem;
 import tk.roccodev.beezig.laby.LabyMain;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class  ModuleItemProperties {
 
 	private StringItem item;
+
+	private HashMap<String, Class> enums = new HashMap<>();
 
 	public ModuleItemProperties(StringItem in) {
 		this.item = in;
@@ -50,11 +57,30 @@ public class  ModuleItemProperties {
 		String apply = LabyMain.SELF.getConfig().has(pkey)
 				? LabyMain.SELF.getConfig().get(pkey).getAsString()
 				: defaultValue.toString();
-		item.addAttribute(key, apply);
+
+		List<String> build = new ArrayList<>();
+		try {
+			Object[] raw = (Object[]) enumClass.getMethod("values").invoke(null);
+			for(Object o : raw) {
+				build.add(o.toString());
+			}
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		}
+
+		item.addAttributeEnum(key, apply, build.toArray(new String[0]));
+		enums.put(key, enumClass);
 	}
 
 	public IConfigItem getSetting(String key) {
-		return new IConfigItem<>(Boolean.parseBoolean(item.getAttribute(key, null)));
+	    if(!enums.containsKey(key))
+		    return new IConfigItem<>(Boolean.parseBoolean(item.getAttribute(key, null)));
+	    else
+            return new IConfigItem<>(Enum.valueOf(enums.get(key), item.getAttribute(key, null)));
 	}
 
 	/**
