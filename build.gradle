@@ -37,6 +37,8 @@ sourceSets {
             srcDirs 'Beezig/src/core/messages'
             srcDirs 'Beezig/src/lang'
             srcDirs 'Beezig/src/libraries'
+            srcDirs 'Beezig/src/javazoom/jl/decoder'
+            exclude '**/*.java'
         }
     }
 

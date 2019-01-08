@@ -1,6 +1,7 @@
 package tk.roccodev.beezig.laby;
 
 import eu.the5zig.mod.The5zigAPI;
+import eu.the5zig.mod.event.ServerQuitEvent;
 import net.labymod.api.events.TabListEvent;
 import net.labymod.servermanager.ChatDisplayAction;
 import net.labymod.servermanager.Server;
@@ -33,6 +34,7 @@ public class LabyHive extends Server {
     public void reset() {
         System.out.println("Left Hive \n\n");
         The5zigAPI.getAPI().setServerInstance(null, null);
+        The5zigAPI.getAPI().getPluginManager().fireEvent(new ServerQuitEvent());
     }
 
     @Override
