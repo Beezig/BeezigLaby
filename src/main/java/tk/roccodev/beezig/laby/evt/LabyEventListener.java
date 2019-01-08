@@ -1,14 +1,19 @@
 package tk.roccodev.beezig.laby.evt;
 
 import eu.the5zig.mod.The5zigAPI;
+import eu.the5zig.mod.event.ActionBarEvent;
 import eu.the5zig.mod.event.ChatEvent;
 import eu.the5zig.mod.event.ChatSendEvent;
+import eu.the5zig.mod.event.TitleEvent;
 import eu.the5zig.mod.server.AbstractGameListener;
 import eu.the5zig.mod.server.GameListenerRegistry;
 import eu.the5zig.mod.server.GameMode;
 import net.labymod.api.EventManager;
 import net.labymod.api.events.MessageSendEvent;
 import net.labymod.api.events.PluginMessageEvent;
+import net.labymod.utils.Consumer;
+import net.minecraft.network.play.server.S02PacketChat;
+import net.minecraft.network.play.server.S45PacketTitle;
 import tk.roccodev.beezig.laby.LabyMain;
 
 /**
@@ -63,5 +68,36 @@ public class LabyEventListener {
             }
         });
 
+        
+        mgr.registerOnIncomingPacket(o -> {
+            if(The5zigAPI.getAPI().getActiveServer() == null) return;
+            if(o instanceof S45PacketTitle) {
+                S45PacketTitle pkt = (S45PacketTitle)o;
+                String title = "";
+                String subtitle = "";
+                if(pkt.getType() == S45PacketTitle.Type.TITLE) title = pkt.getMessage().getFormattedText();
+                if(pkt.getType() == S45PacketTitle.Type.SUBTITLE) subtitle = pkt.getMessage().getFormattedText();
+
+                The5zigAPI.getAPI().getPluginManager().fireEvent(new TitleEvent(title, subtitle));
+                for (AbstractGameListener list : GameListenerRegistry.gameListeners) {
+                    GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
+                    try {
+                        list.onTitle(gm, title.isEmpty() ? null : title, subtitle.isEmpty() ? null : subtitle);
+                    } catch (Exception ignored) {}
+                }
+            }
+            else if(o instanceof S02PacketChat) {
+                S02PacketChat pkt = (S02PacketChat)o;
+                if(pkt.getType() == 2) {
+                    The5zigAPI.getAPI().getPluginManager().fireEvent(new ActionBarEvent(pkt.getChatComponent().getUnformattedText()));
+                    for (AbstractGameListener list : GameListenerRegistry.gameListeners) {
+                        GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
+                        try {
+                            list.onActionBar(gm, pkt.getChatComponent().getUnformattedText());
+                        } catch (Exception ignored) {}
+                    }
+                }
+            }
+        });
     }
 }
