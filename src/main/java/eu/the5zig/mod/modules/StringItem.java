@@ -122,7 +122,9 @@ public class StringItem extends SimpleModule {
 	@Override
 	public String getDisplayValue() {
 		try {
-			return getValue(false).toString();
+			Object val = getValue(false);
+			if(val == null) return "?";
+			return val.toString();
 		} catch(Exception e) {
 			System.out.println("Exception occurred while rendering " + key);
 			e.printStackTrace();
