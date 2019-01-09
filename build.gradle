@@ -21,6 +21,13 @@ compileJava {
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
 }
+
+reobf {
+    jar {
+        useNotchSrg()
+    }
+}
+
 import org.apache.tools.ant.taskdefs.condition.Os
 sourceSets {
     main {

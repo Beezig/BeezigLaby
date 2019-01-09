@@ -1,18 +1,12 @@
 package tk.roccodev.beezig.laby;
 
 import eu.the5zig.mod.The5zigAPI;
-import eu.the5zig.mod.modules.StringItem;
 import eu.the5zig.mod.server.GameListenerRegistry;
 import eu.the5zig.util.BeezigI18N;
 import net.labymod.addon.AddonLoader;
 import net.labymod.api.LabyModAPI;
 import net.labymod.api.LabyModAddon;
-import net.labymod.core.LabyModCore;
-import net.labymod.ingamegui.ModuleCategory;
-import net.labymod.ingamegui.ModuleCategoryRegistry;
-import net.labymod.settings.elements.ControlElement;
 import net.labymod.settings.elements.SettingsElement;
-import net.labymod.utils.Material;
 import tk.roccodev.beezig.BeezigMain;
 import tk.roccodev.beezig.laby.categories.ModuleCategories;
 import tk.roccodev.beezig.laby.evt.LabyEventListener;

@@ -11,7 +11,6 @@ import eu.the5zig.mod.server.GameMode;
 import net.labymod.api.EventManager;
 import net.labymod.api.events.MessageSendEvent;
 import net.labymod.api.events.PluginMessageEvent;
-import net.labymod.utils.Consumer;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.network.play.server.S45PacketTitle;
 import tk.roccodev.beezig.laby.LabyMain;
