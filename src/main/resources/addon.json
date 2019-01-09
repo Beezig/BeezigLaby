@@ -5,7 +5,7 @@
   "description": "Provides support for The Hive, with advanced modules and features.",
   "category": 3,
   "mainClass": "tk.roccodev.beezig.laby.LabyMain",
-  "icon": "http://roccodev.pw/beezighosting/laby/icon/logo.png",
+  "icon": "https://roccodev.pw/beezighosting/laby/icon/logo.png",
 
   "version": 1
 }
