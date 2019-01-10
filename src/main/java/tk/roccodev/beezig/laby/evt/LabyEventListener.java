@@ -13,8 +13,9 @@ import net.labymod.api.events.MessageSendEvent;
 import net.labymod.api.events.PluginMessageEvent;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.network.play.server.S45PacketTitle;
-import tk.roccodev.beezig.hiveapi.stuff.grav.GRAVListenerv2;
 import tk.roccodev.beezig.laby.LabyMain;
+
+import java.lang.reflect.ParameterizedType;
 
 /**
  * Created by Rocco on 05/01/2019.
@@ -31,13 +32,14 @@ public class LabyEventListener {
                 for (AbstractGameListener list : GameListenerRegistry.gameListeners) {
                     GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
                     try {
+                        if(!getTypeParam(list).isAssignableFrom(gm.getClass())) continue;
                         boolean result = list.onServerChat(gm, s.replace("§r", ""));
                         if (apply && result) {
                             bool = result;
                             apply = false;
                         }
                     }
-                    catch(Exception ignored) {}
+                    catch(Exception ignored) {ignored.printStackTrace();}
                 }
                 The5zigAPI.getAPI().getActiveServer().getGameListener().match(s1);
                 return bool || The5zigAPI.getAPI().getPluginManager().fireEvent(new ChatEvent(s.replace("§r", ""), s1)).isCancelled();
@@ -99,5 +101,11 @@ public class LabyEventListener {
                 }
             }
         });
+    }
+
+    private static Class getTypeParam(Object o) {
+        return (Class)
+                ((ParameterizedType)o.getClass().getGenericSuperclass())
+                        .getActualTypeArguments()[0];
     }
 }
