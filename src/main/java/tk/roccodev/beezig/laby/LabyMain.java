@@ -42,7 +42,9 @@ public class LabyMain extends LabyModAddon {
         super.init(addonName, uuid);
         INSTANCE.onLoad(null); // Init is called after onEnable (config is accessible here)
 
-        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new PlayerMenu.PlayerMenuEntry("Show stats", "/stats {name}", true));
+        LabyMod.getInstance().getChatToolManager().getPlayerMenu()
+                .add(
+                        new PlayerMenu.PlayerMenuEntry("[Beezig] Show stats", "/stats {name}", true));
     }
 
     @Override
