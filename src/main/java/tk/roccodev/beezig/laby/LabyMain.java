@@ -6,6 +6,8 @@ import eu.the5zig.util.BeezigI18N;
 import net.labymod.addon.AddonLoader;
 import net.labymod.api.LabyModAPI;
 import net.labymod.api.LabyModAddon;
+import net.labymod.ingamechat.tools.playermenu.PlayerMenu;
+import net.labymod.main.LabyMod;
 import net.labymod.settings.elements.SettingsElement;
 import tk.roccodev.beezig.BeezigMain;
 import tk.roccodev.beezig.laby.categories.ModuleCategories;
@@ -39,6 +41,8 @@ public class LabyMain extends LabyModAddon {
     public void init(String addonName, UUID uuid) {
         super.init(addonName, uuid);
         INSTANCE.onLoad(null); // Init is called after onEnable (config is accessible here)
+
+        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new PlayerMenu.PlayerMenuEntry("Show stats", "/stats {name}", true));
     }
 
     @Override
