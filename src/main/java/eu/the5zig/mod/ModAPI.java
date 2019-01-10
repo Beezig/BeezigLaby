@@ -272,9 +272,30 @@ public class ModAPI {
 		return PlayerGameMode.SURVIVAL;
 	}
 
+	private String fromItemKey(String key) {
+		switch(key) {
+			case "minecraft:iron_ingot":
+				return "item.ingotIron";
+			case "minecraft:gold_ingot":
+				return "item.ingotGold";
+			case "minecraft:diamond":
+				return "item.diamond";
+			case "minecraft:emerald":
+				return "item.emerald";
+		}
+		return key;
+	}
 
 	public int getItemCount(String key) {
-		return 0;
+		if(key == null) return 0;
+		key = fromItemKey(key);
+		int count = 0;
+		for(net.minecraft.item.ItemStack stack : LabyModCore.getMinecraft().getPlayer().inventory.mainInventory) {
+			if(stack != null) {
+				if(key.equals(stack.getUnlocalizedName())) count += stack.stackSize;
+			}
+		}
+		return count;
 	}
 
 
