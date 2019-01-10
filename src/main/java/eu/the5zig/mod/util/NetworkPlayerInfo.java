@@ -25,7 +25,7 @@ public class NetworkPlayerInfo {
 	 * @return the display name of this player or {@code null}, if no special display name has been set.
 	 */
 	public String getDisplayName() {
-		return in.getDisplayName().getFormattedText();
+		return in.getDisplayName() == null ? null : in.getDisplayName().getFormattedText();
 	}
 
 	/**
