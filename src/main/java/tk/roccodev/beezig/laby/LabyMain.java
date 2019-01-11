@@ -13,6 +13,7 @@ import tk.roccodev.beezig.BeezigMain;
 import tk.roccodev.beezig.laby.categories.ModuleCategories;
 import tk.roccodev.beezig.laby.evt.LabyEventListener;
 import tk.roccodev.beezig.laby.evt.LabyForgeListener;
+import tk.roccodev.beezig.laby.misc.PlayerMenuEntries;
 
 import java.util.List;
 import java.util.UUID;
@@ -42,9 +43,7 @@ public class LabyMain extends LabyModAddon {
         super.init(addonName, uuid);
         INSTANCE.onLoad(null); // Init is called after onEnable (config is accessible here)
 
-        LabyMod.getInstance().getChatToolManager().getPlayerMenu()
-                .add(
-                        new PlayerMenu.PlayerMenuEntry("[Beezig] Show stats", "/stats {name}", true));
+        PlayerMenuEntries.init();
     }
 
     @Override
