@@ -15,6 +15,7 @@ import tk.roccodev.beezig.laby.categories.ModuleCategories;
 import tk.roccodev.beezig.laby.evt.LabyEventListener;
 import tk.roccodev.beezig.laby.evt.LabyForgeListener;
 import tk.roccodev.beezig.laby.misc.PlayerMenuEntries;
+import tk.roccodev.beezig.laby.misc.SettingsLoader;
 
 import java.util.List;
 import java.util.UUID;
@@ -39,6 +40,7 @@ public class LabyMain extends LabyModAddon {
         The5zigAPI.getAPI().getPluginManager().registerListener(null, INSTANCE);
         GameListenerRegistry.loadPatterns();
     }
+
 
     @Override
     public void init(String addonName, UUID uuid) {
@@ -65,7 +67,7 @@ public class LabyMain extends LabyModAddon {
 
     @Override
     protected void fillSettings(List<SettingsElement> list) {
-
+        SettingsLoader.addSettings(list);
     }
 
     public boolean isForge() {
