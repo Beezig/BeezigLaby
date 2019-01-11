@@ -10,6 +10,7 @@ import net.labymod.ingamechat.tools.playermenu.PlayerMenu;
 import net.labymod.main.LabyMod;
 import net.labymod.settings.elements.SettingsElement;
 import tk.roccodev.beezig.BeezigMain;
+import tk.roccodev.beezig.forge.BeezigForgeMod;
 import tk.roccodev.beezig.laby.categories.ModuleCategories;
 import tk.roccodev.beezig.laby.evt.LabyEventListener;
 import tk.roccodev.beezig.laby.evt.LabyForgeListener;
@@ -22,6 +23,7 @@ public class LabyMain extends LabyModAddon {
 
     public static BeezigMain INSTANCE;
     public static LabyModAPI LABY;
+    public static BeezigForgeMod FORGE;
     public static LabyMain SELF;
 
     @Override
@@ -44,6 +46,12 @@ public class LabyMain extends LabyModAddon {
         INSTANCE.onLoad(null); // Init is called after onEnable (config is accessible here)
 
         PlayerMenuEntries.init();
+
+        try {
+            FORGE = new BeezigForgeMod();
+            FORGE.onPre(null);
+            FORGE.onInit(null);
+        } catch(Exception ignored) {} // Exception is thrown when the user is on Labymod Vanilla
     }
 
     @Override
@@ -58,5 +66,9 @@ public class LabyMain extends LabyModAddon {
     @Override
     protected void fillSettings(List<SettingsElement> list) {
 
+    }
+
+    public boolean isForge() {
+        return FORGE != null;
     }
 }

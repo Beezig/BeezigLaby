@@ -1,3 +1,6 @@
 [submodule "Beezig"]
 	path = Beezig
 	url = https://github.com/Beezig/Beezig.git
+[submodule "BeezigForge"]
+	path = BeezigForge
+	url = https://github.com/Beezig/BeezigForge.git
