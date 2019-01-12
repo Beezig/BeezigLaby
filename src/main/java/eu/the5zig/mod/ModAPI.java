@@ -122,6 +122,7 @@ public class ModAPI {
 		serverInstance = set;
 		if(!initList) {
 			initList = true;
+			if(serverInstance != null)
 			serverInstance.registerListeners();
 		}
 		if(serverInstance != null)
