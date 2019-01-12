@@ -18,3 +18,5 @@ LabyMod/
 resourcepacks/
 saves/
 server-resource-packs/
+screenshots/
+*.log
