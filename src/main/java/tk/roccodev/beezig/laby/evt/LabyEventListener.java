@@ -14,7 +14,6 @@ import net.labymod.api.events.PluginMessageEvent;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.network.play.server.S45PacketTitle;
 import tk.roccodev.beezig.laby.LabyMain;
-import tk.roccodev.beezig.laby.misc.PlayerMenuEntries;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -42,11 +41,7 @@ public class LabyEventListener {
                     }
                     catch(Exception ignored) {}
                 }
-                int matched = The5zigAPI.getAPI().getActiveServer().getGameListener().match(s1).size();
-                if(matched != 0) {
-                    PlayerMenuEntries.add(PlayerMenuEntries.STATS);
-                }
-
+                The5zigAPI.getAPI().getActiveServer().getGameListener().match(s1);
                 return bool || The5zigAPI.getAPI().getPluginManager().fireEvent(new ChatEvent(s.replace("§r", ""), s1)).isCancelled();
             }
             else return false;
@@ -64,10 +59,6 @@ public class LabyEventListener {
 
         mgr.register((PluginMessageEvent) (s, packetBuffer) -> {
             if(s.equals("MC|Brand")) { // Switched servers
-
-                PlayerMenuEntries.remove(PlayerMenuEntries.TIMV_TEST);
-                PlayerMenuEntries.remove(PlayerMenuEntries.STATS);
-
                 if (The5zigAPI.getAPI().getActiveServer() != null) {
                     for (AbstractGameListener list : GameListenerRegistry.gameListeners) {
                         GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
