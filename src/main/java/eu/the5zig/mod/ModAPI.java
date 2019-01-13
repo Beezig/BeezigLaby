@@ -36,6 +36,7 @@ import net.minecraft.util.ResourceLocation;
 import tk.roccodev.beezig.laby.LabyMain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,6 +48,9 @@ public class ModAPI {
 	private PluginManager mgr = new PluginManager();
 	private ServerInstance serverInstance;
 	private boolean initList = false;
+	private final List<String> unsupportedModules = Arrays.asList(
+			"caicooldowns", "labexperiments", "lablb"
+	);
 
 	/**
 	 * @return the version of the 5zig mod.
@@ -90,6 +94,7 @@ public class ModAPI {
 
 	private int sortingCount = 0;
 	public void registerModuleItem(Object plugin, String key, Class<? extends GameModeItem> moduleItem, String category) {
+		if(unsupportedModules.contains(key)) return;
 		try {
 		    GameModeItem item = moduleItem.newInstance();
 		    item.setKey(key);
