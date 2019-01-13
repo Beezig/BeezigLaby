@@ -5,6 +5,7 @@ install: gradle setupCIWorkspace build
 before_install:
   - chmod +x mirror.sh
   - sh mirror.sh
+  - chmod +x gradlew
 deploy:
 - provider: pages
   skip_cleanup: true
