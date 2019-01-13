@@ -103,7 +103,7 @@ public class LabyEventListener {
         });
     }
 
-    private static Class getTypeParam(Object o) {
+     static Class getTypeParam(Object o) {
         return (Class)
                 ((ParameterizedType)o.getClass().getGenericSuperclass())
                         .getActualTypeArguments()[0];
