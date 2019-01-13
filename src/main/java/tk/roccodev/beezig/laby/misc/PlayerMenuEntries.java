@@ -6,18 +6,21 @@ import net.labymod.main.LabyMod;
 import net.labymod.user.User;
 import net.labymod.user.gui.UserActionGui;
 import net.labymod.user.util.UserActionEntry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.player.EntityPlayer;
 import tk.roccodev.beezig.ActiveGame;
+import tk.roccodev.beezig.IHive;
 import tk.roccodev.beezig.advancedrecords.AdvancedRecords;
 import tk.roccodev.beezig.games.TIMV;
+import tk.roccodev.beezig.laby.gui.ReportReasonScreen;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
 public class PlayerMenuEntries {
 
-    public static UserActionEntry STATS, TIMV_TEST;
+    public static UserActionEntry STATS, TIMV_TEST, REPORT;
 
     public static void init() {
 
@@ -56,8 +59,21 @@ public class PlayerMenuEntries {
             }
         });
 
+        REPORT = new UserActionEntry("[Beezig] Report", UserActionEntry.EnumActionType.NONE, null, new UserActionEntry.ActionExecutor() {
+            @Override
+            public void execute(User user, EntityPlayer entityPlayer, NetworkPlayerInfo networkPlayerInfo) {
+                Minecraft.getMinecraft().displayGuiScreen(new ReportReasonScreen(null, networkPlayerInfo.getGameProfile().getName()));
+            }
+
+            @Override
+            public boolean canAppear(User user, EntityPlayer entityPlayer, NetworkPlayerInfo networkPlayerInfo) {
+                return The5zigAPI.getAPI().getActiveServer() instanceof IHive;
+            }
+        });
+
         entries.add(STATS);
         entries.add(TIMV_TEST);
+        entries.add(REPORT);
 
         } catch(Exception ignored) {}
     }
