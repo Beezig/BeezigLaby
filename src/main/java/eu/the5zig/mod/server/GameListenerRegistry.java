@@ -55,18 +55,13 @@ public class GameListenerRegistry {
 
 		boolean gameModeFound = false;
 		if (newLobby != null) {
-			for (final AbstractGameListener<? extends GameMode> gameListener : this.gameListeners) {
+			for (final AbstractGameListener gameListener : gameListeners) {
 				if (gameListener.matchLobby(newLobby)) {
 					try {
-						current = gameListener.getGameMode().newInstance();
-						for(AbstractGameListener list : gameListeners) {
-							if(list instanceof HiveListener) continue;
-							try {
-								list.onGameModeJoin(current);
-								System.out.println(list.getClass().getName());
-							}
-							catch (Exception ignored){ }
-						}
+						current = (GameMode) gameListener.getGameMode().newInstance();
+						gameListener.onGameModeJoin(current);
+						System.out.println(gameListener.getClass().getName());
+
 					}
 					catch (Throwable throwable) {
 						throwable.printStackTrace();

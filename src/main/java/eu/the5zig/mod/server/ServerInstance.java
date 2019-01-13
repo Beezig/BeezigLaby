@@ -29,7 +29,7 @@ public abstract class ServerInstance {
 	/**
 	 * Utility class that holds all game mode listeners and contains util methods to send & ignore server messages.
 	 */
-	GameListenerRegistry gameListener = new GameListenerRegistry();
+	private static GameListenerRegistry gameListener = new GameListenerRegistry();
 
 	/**
 	 * Register all your game mode listeners in this method, using {@link #getGameListener()}
