@@ -47,6 +47,10 @@ sourceSets {
             srcDirs 'Beezig/src/libraries'
             srcDirs 'Beezig/src/javazoom/jl/decoder'
             exclude '**/*.java'
+            exclude '**/*.dll'
+            exclude '**/*.dylib'
+            exclude '**/*.so'
+            exclude '**/*.jnilib'
         }
     }
 
@@ -94,6 +98,10 @@ processResources
             from(sourceSets.main.resources.srcDirs) {
                 exclude 'mcmod.info'
                 exclude '**/*.java'
+                exclude '**/*.dll'
+                exclude '**/*.dylib'
+                exclude '**/*.so'
+                exclude '**/*.jnilib'
             }
 
         }
