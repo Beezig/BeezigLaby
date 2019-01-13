@@ -13,7 +13,7 @@ public class SettingsLoader {
     public static void addSettings(List<SettingsElement> settings) {
         for(Setting setting : Setting.values()) {
             settings.add(new BooleanElement(setting.getBrieferDescription(),
-                    new ControlElement.IconData(Material.LEVER),
+                    new ControlElement.IconData(Material.valueOf(setting.getLabyIcon())),
                     setting::setValue, setting.getValue()));
         }
     }

@@ -10,8 +10,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.player.EntityPlayer;
 import tk.roccodev.beezig.ActiveGame;
+import tk.roccodev.beezig.CommandManager;
 import tk.roccodev.beezig.IHive;
 import tk.roccodev.beezig.advancedrecords.AdvancedRecords;
+import tk.roccodev.beezig.games.DR;
 import tk.roccodev.beezig.games.TIMV;
 import tk.roccodev.beezig.laby.gui.ReportReasonScreen;
 
@@ -20,7 +22,7 @@ import java.util.List;
 
 public class PlayerMenuEntries {
 
-    public static UserActionEntry STATS, TIMV_TEST, REPORT;
+    public static UserActionEntry STATS, TIMV_TEST, REPORT, DR_PB, DR_CWR;
 
     public static void init() {
 
@@ -71,9 +73,35 @@ public class PlayerMenuEntries {
             }
         });
 
+        DR_PB = new UserActionEntry("[Beezig] Show Personal Best", UserActionEntry.EnumActionType.NONE, null, new UserActionEntry.ActionExecutor() {
+            @Override
+            public void execute(User user, EntityPlayer entityPlayer, NetworkPlayerInfo networkPlayerInfo) {
+                CommandManager.dispatchCommand("/pb " + networkPlayerInfo.getGameProfile().getName());
+            }
+
+            @Override
+            public boolean canAppear(User user, EntityPlayer entityPlayer, NetworkPlayerInfo networkPlayerInfo) {
+                return ActiveGame.is("dr") && DR.activeMap != null;
+            }
+        });
+
+        DR_CWR = new UserActionEntry("[Beezig] Show Best map", UserActionEntry.EnumActionType.NONE, null, new UserActionEntry.ActionExecutor() {
+            @Override
+            public void execute(User user, EntityPlayer entityPlayer, NetworkPlayerInfo networkPlayerInfo) {
+                CommandManager.dispatchCommand("/cwr " + networkPlayerInfo.getGameProfile().getName());
+            }
+
+            @Override
+            public boolean canAppear(User user, EntityPlayer entityPlayer, NetworkPlayerInfo networkPlayerInfo) {
+                return ActiveGame.is("dr");
+            }
+        });
+
         entries.add(STATS);
         entries.add(TIMV_TEST);
         entries.add(REPORT);
+        entries.add(DR_PB);
+        entries.add(DR_CWR);
 
         } catch(Exception ignored) {}
     }
