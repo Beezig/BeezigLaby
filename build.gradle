@@ -17,6 +17,17 @@ version = "1.0"
 group= "tk.roccodev.beezig-laby" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "BeezigLaby"
 
+configurations {
+    embed
+}
+
+repositories {
+    maven {
+        name = "bdd"
+        url = "https://nexus.bedatadriven.com/content/repositories/public"
+    }
+}
+
 compileJava {
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
@@ -76,6 +87,8 @@ dependencies {
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.1'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
+
+    runtime group: 'org.newsclub.net', name: 'junixsocket', version: '1.3'
 
 }
 
