@@ -12,19 +12,18 @@ rm -rf .git
 rm .gitmodules
 
 # Copy the contents of the submodules into the root folder
-rm Beezig/src/pw
 
-rsync -av Beezig/src/ src/main/java/
+rsync -av Beezig/hive-api-wrapper/src/main/java src/main/java/
+rsync -av Beezig/src/ src/main/java/ --remove-source-files
 ls -a
-rsync -av submodules/src/ src/main/java/
-rsync BeezigForge/src/main/java/ src/main/java/
+rsync BeezigForge/src/main/java/ src/main/java/ --remove-source-files
 
 rm -rf Beezig
 rm -rf BeezigForge
 
-rsync -av src/main/java/libraries/ src/main/resources/
-rsync -av src/main/java/lang/ src/main/resources/
-rsync -av src/main/java/core/messages/ src/main/resources/
+rsync -av src/main/java/libraries/ src/main/resources/ --remove-source-files
+rsync -av src/main/java/lang/ src/main/resources/ --remove-source-files
+rsync -av src/main/java/core/messages/ src/main/resources/ --remove-source-files
 
 git init # Create a blank repository
 git remote add origin https://${GIT_TOKEN}@github.com/RoccoDev/BeezigLaby-Mirror.git # Add the mirror as remote

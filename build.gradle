@@ -34,16 +34,14 @@ reobf {
     }
 }
 
-import org.apache.tools.ant.taskdefs.condition.Os
 sourceSets {
     main {
         java {
             srcDirs 'src/main/java'
             srcDirs 'Beezig/src'
             srcDirs 'BeezigForge/src/main/java'
-            if(Os.isFamily(Os.FAMILY_WINDOWS)) {
-                srcDirs 'Beezig/src/submodules/src/main/java'
-            }
+            srcDirs 'Beezig/hive-api-wrapper/src/main/java'
+
         }
 
         resources {
