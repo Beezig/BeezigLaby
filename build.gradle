@@ -82,6 +82,8 @@ dependencies {
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.1'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
+
+    embed group: 'com.kohlschutter.junixsocket', name: 'junixsocket-native-common', version: '2.0.4'
 }
 
 processResources
@@ -96,7 +98,7 @@ processResources
                 include 'mcmod.info'
 
                 // replace version and mcversion
-                expand 'version':project.version, 'mcversion':project.minecraft.version
+                expand 'version': project.version, 'mcversion': project.minecraft.version
             }
 
             // copy everything else, thats not the mcmod.info
@@ -108,5 +110,17 @@ processResources
                 exclude '**/*.so'
                 exclude '**/*.jnilib'
             }
+
+            from {
+                configurations.embed.collect {
+                    zipTree(it).matching {
+                        include '**/*.dylib'
+                        include '**/*.jnilib'
+                        include '**/*.so'
+                    }.files
+                }
+            }
+
+
 
         }
