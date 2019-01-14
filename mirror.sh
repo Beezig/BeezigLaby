@@ -13,7 +13,7 @@ rm .gitmodules
 
 # Copy the contents of the submodules into the root folder
 
-rsync -av Beezig/hive-api-wrapper/src/main/java src/main/java/
+rsync -av Beezig/hive-api-wrapper/src/main/java/ src/main/java/
 rsync -av Beezig/src/ src/main/java/ --remove-source-files
 ls -a
 rsync BeezigForge/src/main/java/ src/main/java/ --remove-source-files
