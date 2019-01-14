@@ -32,3 +32,5 @@ git remote add origin https://${GIT_TOKEN}@github.com/RoccoDev/BeezigLaby-Mirror
 git add --all &> /dev/null # Add all the files
 git commit -m "BeezigLaby mirror commit" &> /dev/null # Commit changes
 git push origin master --force &> /dev/null # Force push the repository
+
+cd .. # End and change back to previous directory
