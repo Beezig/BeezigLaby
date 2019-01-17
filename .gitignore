@@ -21,3 +21,4 @@
 *.dylib
 *.jnilib
 *.so
+gradle.properties
