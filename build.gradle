@@ -47,6 +47,7 @@ sourceSets {
 
         resources {
             srcDirs 'src/main/resources'
+            srcDirs 'BeezigForge/src/main/resources'
             srcDirs 'Beezig/src/core/messages'
             srcDirs 'Beezig/src/lang'
             srcDirs 'Beezig/src/libraries'
