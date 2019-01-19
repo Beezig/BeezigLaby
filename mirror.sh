@@ -16,8 +16,8 @@ rm .gitmodules
 rsync -av Beezig/hive-api-wrapper/src/main/java/ src/main/java/
 rsync -av Beezig/src/ src/main/java/ --remove-source-files
 ls -a
-rsync BeezigForge/src/main/java/ src/main/java/ --remove-source-files
-rsync BeezigForge/src/main/resources/ src/main/resources/ --remove-source-files
+rsync -av BeezigForge/src/main/java/ src/main/java/ --remove-source-files
+rsync -av BeezigForge/src/main/resources/ src/main/resources/ --remove-source-files
 
 rm -rf Beezig
 rm -rf BeezigForge
