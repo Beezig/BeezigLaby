@@ -36,8 +36,8 @@ public class LabyHive extends Server {
     public void onJoin(ServerData serverData) {
         System.out.println("Joined Hive\n\n");
         The5zigAPI.getAPI().setServerInstance(new IHive(), serverData.serverIP);
-        if(BeezigMain.hasExpansion)
-            Tabs.getTabUpdateListener().add(tab = stringMap -> stringMap.put("The Hive", new Class[] {BriefingGui.class}));
+
+        Tabs.getTabUpdateListener().add(tab = stringMap -> stringMap.put("The Hive", new Class[] {BriefingGui.class}));
     }
 
     @Override
@@ -45,8 +45,8 @@ public class LabyHive extends Server {
         System.out.println("Left Hive \n\n");
         The5zigAPI.getAPI().setServerInstance(null, null);
         The5zigAPI.getAPI().getPluginManager().fireEvent(new ServerQuitEvent());
-        if(BeezigMain.hasExpansion)
-            Tabs.getTabUpdateListener().remove(tab);
+
+        Tabs.getTabUpdateListener().remove(tab);
     }
 
     @Override
