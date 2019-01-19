@@ -3,19 +3,27 @@ package tk.roccodev.beezig.laby;
 import eu.the5zig.mod.The5zigAPI;
 import eu.the5zig.mod.event.ServerQuitEvent;
 import net.labymod.api.events.TabListEvent;
+import net.labymod.gui.elements.Tabs;
 import net.labymod.servermanager.ChatDisplayAction;
 import net.labymod.servermanager.Server;
 import net.labymod.settings.elements.SettingsElement;
+import net.labymod.utils.Consumer;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.PacketBuffer;
+import tk.roccodev.beezig.BeezigMain;
 import tk.roccodev.beezig.IHive;
+import tk.roccodev.beezig.forge.gui.briefing.BriefingGui;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Rocco on 05/01/2019.
  */
 public class LabyHive extends Server {
+
+    private static Consumer<Map<String, Class<? extends GuiScreen>[]>> tab;
 
     LabyHive() {
         super("The Hive", "premium.hivemc.com", "premium.hive.sexy", "hive.sexy", "hivemc.eu", "play.hivemc.com",
@@ -28,6 +36,8 @@ public class LabyHive extends Server {
     public void onJoin(ServerData serverData) {
         System.out.println("Joined Hive\n\n");
         The5zigAPI.getAPI().setServerInstance(new IHive(), serverData.serverIP);
+        if(BeezigMain.hasExpansion)
+            Tabs.getTabUpdateListener().add(tab = stringMap -> stringMap.put("The Hive", new Class[] {BriefingGui.class}));
     }
 
     @Override
@@ -35,6 +45,8 @@ public class LabyHive extends Server {
         System.out.println("Left Hive \n\n");
         The5zigAPI.getAPI().setServerInstance(null, null);
         The5zigAPI.getAPI().getPluginManager().fireEvent(new ServerQuitEvent());
+        if(BeezigMain.hasExpansion)
+            Tabs.getTabUpdateListener().remove(tab);
     }
 
     @Override
