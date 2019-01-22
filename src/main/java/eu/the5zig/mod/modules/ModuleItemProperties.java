@@ -17,7 +17,7 @@
 package eu.the5zig.mod.modules;
 
 import eu.the5zig.mod.config.IConfigItem;
-import tk.roccodev.beezig.laby.LabyMain;
+import eu.beezig.laby.LabyMain;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

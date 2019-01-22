@@ -33,7 +33,7 @@ import net.labymod.main.Source;
 import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.util.ResourceLocation;
-import tk.roccodev.beezig.laby.LabyMain;
+import eu.beezig.laby.LabyMain;
 
 import java.util.ArrayList;
 import java.util.Arrays;

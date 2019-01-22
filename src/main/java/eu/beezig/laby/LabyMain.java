@@ -1,5 +1,9 @@
-package tk.roccodev.beezig.laby;
+package eu.beezig.laby;
 
+import eu.beezig.laby.categories.ModuleCategories;
+import eu.beezig.laby.evt.LabyEventListener;
+import eu.beezig.laby.evt.LabyForgeListener;
+import eu.beezig.laby.misc.SettingsLoader;
 import eu.the5zig.mod.The5zigAPI;
 import eu.the5zig.mod.server.GameListenerRegistry;
 import eu.the5zig.util.BeezigI18N;
@@ -7,13 +11,9 @@ import net.labymod.addon.AddonLoader;
 import net.labymod.api.LabyModAPI;
 import net.labymod.api.LabyModAddon;
 import net.labymod.settings.elements.SettingsElement;
-import tk.roccodev.beezig.BeezigMain;
-import tk.roccodev.beezig.forge.BeezigForgeMod;
-import tk.roccodev.beezig.laby.categories.ModuleCategories;
-import tk.roccodev.beezig.laby.evt.LabyEventListener;
-import tk.roccodev.beezig.laby.evt.LabyForgeListener;
-import tk.roccodev.beezig.laby.misc.PlayerMenuEntries;
-import tk.roccodev.beezig.laby.misc.SettingsLoader;
+import eu.beezig.core.BeezigMain;
+import eu.beezig.forge.BeezigForgeMod;
+import eu.beezig.laby.misc.PlayerMenuEntries;
 
 import java.util.List;
 import java.util.UUID;

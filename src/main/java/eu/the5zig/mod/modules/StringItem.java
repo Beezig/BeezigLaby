@@ -19,22 +19,18 @@ package eu.the5zig.mod.modules;
 import eu.the5zig.mod.render.RenderLocation;
 import net.labymod.gui.elements.DropDownMenu;
 import net.labymod.ingamegui.ModuleCategory;
-import net.labymod.ingamegui.ModuleConfig;
 import net.labymod.ingamegui.moduletypes.SimpleModule;
 import net.labymod.settings.elements.BooleanElement;
 import net.labymod.settings.elements.ControlElement;
 import net.labymod.settings.elements.DropDownElement;
 import net.labymod.settings.elements.SettingsElement;
-import net.labymod.utils.Consumer;
 import net.labymod.utils.Material;
-import tk.roccodev.beezig.Log;
-import tk.roccodev.beezig.laby.LabyMain;
-import tk.roccodev.beezig.laby.categories.ModuleCategories;
+import eu.beezig.core.Log;
+import eu.beezig.laby.LabyMain;
+import eu.beezig.laby.categories.ModuleCategories;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A module item that renders a simple text to the screen. Simply extend this class and

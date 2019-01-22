@@ -1,12 +1,12 @@
-package tk.roccodev.beezig.laby.gui;
+package eu.beezig.laby.gui;
 
 import net.labymod.gui.elements.ModTextField;
 import net.labymod.main.lang.LanguageManager;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
-import tk.roccodev.beezig.CommandManager;
-import tk.roccodev.beezig.laby.LabyMain;
+import eu.beezig.core.CommandManager;
+import eu.beezig.laby.LabyMain;
 
 import java.io.IOException;
 

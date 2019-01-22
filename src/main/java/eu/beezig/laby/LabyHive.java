@@ -1,4 +1,4 @@
-package tk.roccodev.beezig.laby;
+package eu.beezig.laby;
 
 import eu.the5zig.mod.The5zigAPI;
 import eu.the5zig.mod.event.ServerQuitEvent;
@@ -11,9 +11,9 @@ import net.labymod.utils.Consumer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.PacketBuffer;
-import tk.roccodev.beezig.BeezigMain;
-import tk.roccodev.beezig.IHive;
-import tk.roccodev.beezig.forge.gui.briefing.BriefingGui;
+import eu.beezig.core.BeezigMain;
+import eu.beezig.core.IHive;
+import eu.beezig.forge.gui.briefing.BriefingGui;
 
 import java.util.List;
 import java.util.Map;

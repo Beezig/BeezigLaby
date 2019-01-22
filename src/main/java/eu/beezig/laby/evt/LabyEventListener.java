@@ -1,4 +1,4 @@
-package tk.roccodev.beezig.laby.evt;
+package eu.beezig.laby.evt;
 
 import eu.the5zig.mod.The5zigAPI;
 import eu.the5zig.mod.event.ActionBarEvent;
@@ -13,7 +13,7 @@ import net.labymod.api.events.MessageSendEvent;
 import net.labymod.api.events.PluginMessageEvent;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.network.play.server.S45PacketTitle;
-import tk.roccodev.beezig.laby.LabyMain;
+import eu.beezig.laby.LabyMain;
 
 import java.lang.reflect.ParameterizedType;
 

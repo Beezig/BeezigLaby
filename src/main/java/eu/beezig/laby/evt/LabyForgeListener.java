@@ -1,4 +1,4 @@
-package tk.roccodev.beezig.laby.evt;
+package eu.beezig.laby.evt;
 
 import eu.the5zig.mod.The5zigAPI;
 import eu.the5zig.mod.event.KeyPressEvent;

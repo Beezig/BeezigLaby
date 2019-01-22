@@ -1,4 +1,4 @@
-package tk.roccodev.beezig.laby.categories;
+package eu.beezig.laby.categories;
 
 import net.labymod.ingamegui.ModuleCategory;
 import net.labymod.ingamegui.ModuleCategoryRegistry;

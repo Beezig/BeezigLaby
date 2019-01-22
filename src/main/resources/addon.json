@@ -4,7 +4,7 @@
   "author": "Beezig Team (RoccoDev & ItsNiklass)",
   "description": "Provides support for The Hive, with advanced modules and features.",
   "category": 3,
-  "mainClass": "tk.roccodev.beezig.laby.LabyMain",
+  "mainClass": "eu.beezig.laby.LabyMain",
   "icon": "https://roccodev.pw/beezighosting/laby/icon/logo.png",
 
   "version": 1

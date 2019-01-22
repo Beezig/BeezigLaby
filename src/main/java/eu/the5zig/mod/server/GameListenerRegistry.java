@@ -17,8 +17,8 @@
 package eu.the5zig.mod.server;
 
 import eu.the5zig.mod.The5zigAPI;
-import tk.roccodev.beezig.IHive;
-import tk.roccodev.beezig.listener.HiveListener;
+import eu.beezig.core.IHive;
+import eu.beezig.core.listener.HiveListener;
 
 import java.util.*;
 import java.util.regex.Matcher;

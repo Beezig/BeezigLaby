@@ -1,10 +1,10 @@
-package tk.roccodev.beezig.laby.misc;
+package eu.beezig.laby.misc;
 
 import net.labymod.settings.elements.BooleanElement;
 import net.labymod.settings.elements.ControlElement;
 import net.labymod.settings.elements.SettingsElement;
 import net.labymod.utils.Material;
-import tk.roccodev.beezig.settings.Setting;
+import eu.beezig.core.settings.Setting;
 
 import java.util.List;
 
