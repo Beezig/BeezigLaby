@@ -5,6 +5,7 @@ import eu.the5zig.mod.event.KeyPressEvent;
 import eu.the5zig.mod.server.AbstractGameListener;
 import eu.the5zig.mod.server.GameListenerRegistry;
 import eu.the5zig.mod.server.GameMode;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -34,5 +35,4 @@ public class LabyForgeListener {
     public void onKeyPress(InputEvent.KeyInputEvent evt) {
         The5zigAPI.getAPI().getPluginManager().fireEvent(new KeyPressEvent(0));
     }
-
 }
