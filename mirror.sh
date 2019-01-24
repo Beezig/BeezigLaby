@@ -12,7 +12,7 @@ rm -rf .git
 rm .gitmodules
 
 # Copy the contents of the submodules into the root folder
-
+tm -rf Beezig/src/org/newsclub
 rsync -av Beezig/hive-api-wrapper/src/main/java/ src/main/java/
 rsync -av Beezig/src/ src/main/java/ --remove-source-files
 ls -a
