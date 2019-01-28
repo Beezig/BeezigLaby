@@ -49,7 +49,7 @@ public class ModAPI {
 	private ServerInstance serverInstance;
 	private boolean initList = false;
 	private final List<String> unsupportedModules = Arrays.asList(
-			"caicooldowns", "labexperiments", "lablb"
+			"caicooldowns", "labexperiments", "lablb", "gravstages"
 	);
 
 	/**
