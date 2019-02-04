@@ -125,9 +125,8 @@ public class ModAPI {
 
 	public void setServerInstance(ServerInstance set, String host) {
 		serverInstance = set;
-		if(!initList) {
+		if(!initList && set != null) {
 			initList = true;
-			if(serverInstance != null)
 			serverInstance.registerListeners();
 		}
 		if(serverInstance != null)
