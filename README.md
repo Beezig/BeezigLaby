@@ -2,6 +2,7 @@
 ![Github All Releases](https://img.shields.io/github/downloads/Beezig/BeezigLaby/total.svg)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Beezig/BeezigLaby.svg)
 ![Unique users](https://l.beezig.eu/badgeunique)
+![LOC](https://badgen.net/codeclimate/loc/Beezig/BeezigLaby)
 
 # BeezigLaby
 LabyMod expansion classes for [Beezig](https://github.com/Beezig/Beezig), the Hive plugin for 5zig.
