@@ -49,8 +49,6 @@ public class LabyMain extends LabyModAddon {
 
         try {
             FORGE = new BeezigForgeMod();
-            FORGE.onPre(null);
-            FORGE.onInit(null);
         } catch(Exception ignored) {} // Exception is thrown when the user is on Labymod Vanilla
     }
 
