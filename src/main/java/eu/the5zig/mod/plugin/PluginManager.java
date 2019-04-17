@@ -52,13 +52,7 @@ public class PluginManager {
 				if (method.isAnnotationPresent(EventHandler.class) && method.getParameterTypes().length == 1 && Event.class.isAssignableFrom(method.getParameterTypes()[0])) {
 					final Class<? extends Event> eventClass = (Class<? extends Event>)method.getParameterTypes()[0];
 					final List<RegisteredEventHandler> eventHandlers = this.registeredEvents.get(eventClass);
-					final Iterator<RegisteredEventHandler> iterator = eventHandlers.iterator();
-					while (iterator.hasNext()) {
-						final RegisteredEventHandler registeredEventHandler = iterator.next();
-						if (registeredEventHandler.getInstance() == listener && registeredEventHandler.getMethod().equals(method)) {
-							iterator.remove();
-						}
-					}
+					eventHandlers.removeIf(registeredEventHandler -> registeredEventHandler.getInstance() == listener && registeredEventHandler.getMethod().equals(method));
 					Collections.sort(eventHandlers);
 				}
 			}
