@@ -1,6 +1,6 @@
 language: java
 jdk:
-  - oraclejdk8
+  - openjdk8
 install: gradle setupCIWorkspace build
 before_install:
   - chmod +x mirror.sh
