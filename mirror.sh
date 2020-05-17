@@ -8,6 +8,7 @@ resourceDirs=(lang core META-INF assets)
 
 cd build/libs
 mkdir newSrc
+wget https://rocco.dev/beezighosting/fernflower.jar
 java -jar fernflower.jar BeezigLaby-*.jar newSrc/
 cd newSrc
 rm BeezigLaby-*-sources.jar
