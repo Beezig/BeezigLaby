@@ -6,7 +6,7 @@ before_install:
   - chmod +x mirror.sh
   - chmod +x gradlew
 after_success:
-  - sh mirror.sh
+  - bash mirror.sh
 deploy:
 - provider: pages
   skip_cleanup: true

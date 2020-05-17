@@ -23,6 +23,7 @@ for dir in "${resourceDirs[@]}"
 do
     mv $dir ../resources
 done
+rm -r ../resources/META-INF
 cd -
 cp ../../../EMBED .
 cp ../../../PROVIDE .
