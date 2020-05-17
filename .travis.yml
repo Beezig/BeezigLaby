@@ -5,7 +5,7 @@ install: ./gradlew setupCIWorkspace build
 before_install:
   - chmod +x mirror.sh
   - chmod +x gradlew
-after_install:
+after_success:
   - sh mirror.sh
 deploy:
 - provider: pages
