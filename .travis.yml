@@ -4,8 +4,9 @@ jdk:
 install: ./gradlew setupCIWorkspace build
 before_install:
   - chmod +x mirror.sh
-  - sh mirror.sh
   - chmod +x gradlew
+after_install:
+  - sh mirror.sh
 deploy:
 - provider: pages
   skip_cleanup: true
