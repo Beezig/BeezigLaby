@@ -16,6 +16,9 @@
 
 package eu.the5zig.mod.modules;
 
+import eu.beezig.core.util.text.Message;
+import eu.beezig.laby.LabyMain;
+import eu.beezig.laby.categories.ModuleCategories;
 import eu.the5zig.mod.render.RenderLocation;
 import net.labymod.gui.elements.DropDownMenu;
 import net.labymod.ingamegui.ModuleCategory;
@@ -25,9 +28,6 @@ import net.labymod.settings.elements.ControlElement;
 import net.labymod.settings.elements.DropDownElement;
 import net.labymod.settings.elements.SettingsElement;
 import net.labymod.utils.Material;
-import eu.beezig.core.Log;
-import eu.beezig.laby.LabyMain;
-import eu.beezig.laby.categories.ModuleCategories;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +91,7 @@ public class StringItem extends SimpleModule {
 		return key;
 	}
 
-	public String getPrefix() { return Log.t(getTranslation()); }
+	public String getPrefix() { return Message.translate(getTranslation()); }
 
 	public String getTranslation() {return "beezig.module.timv.karma";}
 
@@ -112,7 +112,7 @@ public class StringItem extends SimpleModule {
 
 	@Override
 	public String getDisplayName() {
-		return Log.t(getTranslation());
+		return Message.translate(getTranslation());
 	}
 
 	@Override
@@ -156,7 +156,7 @@ public class StringItem extends SimpleModule {
 	void addAttribute(String key, String attr) {
 		setAttribute(key, attr);
 		subs.add(new BooleanElement(this, new ControlElement.IconData(Material.LEVER),
-				Log.t("modules.item." + this.key + "." + key), key).addCallback(b -> {
+				Message.translate("modules.item." + this.key + "." + key), key).addCallback(b -> {
 					LabyMain.SELF.getConfig().addProperty("bzg_mdl_" + StringItem.this.key + "_" + key,
 							Boolean.toString(b));
 					LabyMain.SELF.saveConfig();
@@ -166,7 +166,7 @@ public class StringItem extends SimpleModule {
 
 	void addAttributeEnum(String key, String attr, String[] en) {
 	    setAttribute(key, attr);
-	    String disp = Log.t("modules.item." + this.key + "." + key);
+	    String disp = Message.translate("modules.item." + this.key + "." + key);
 	    DropDownMenu<String> menu = new DropDownMenu<String>(disp, 0, 0, 0, 0).fill(en);
 	    menu.setSelected(attr);
 	    DropDownElement<String> elem = new DropDownElement<>(disp, menu);
@@ -195,7 +195,7 @@ public class StringItem extends SimpleModule {
 
 	@Override
 	public String getControlName() {
-		return Log.t("modules.item." + key);
+		return Message.translate("modules.item." + key);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 [submodule "Beezig"]
 	path = Beezig
 	url = https://github.com/Beezig/Beezig.git
+	branch = rewrite-2020
 [submodule "BeezigForge"]
 	path = BeezigForge
 	url = https://github.com/Beezig/BeezigForge.git

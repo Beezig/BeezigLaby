@@ -17,10 +17,25 @@ version = "1.0"
 group= "eu.beezig.laby" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "BeezigLaby"
 
-configurations {
-    embed
+allprojects {
+    project.ext.set("laby", true)
 }
 
+configurations {
+    embed
+    compile.extendsFrom embed
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven {
+        url "https://dl.bintray.com/5zig-reborn/maven"
+    }
+    maven {
+        url "https://libraries.minecraft.net"
+    }
+}
 
 compileJava {
     sourceCompatibility = '1.8'
@@ -39,10 +54,8 @@ sourceSets {
     main {
         java {
             srcDirs 'src/main/java'
-            srcDirs 'Beezig/src'
+            srcDirs 'Beezig/src/main/java'
             srcDirs 'BeezigForge/src/main/java'
-            srcDirs 'Beezig/hive-api-wrapper/src/main/java'
-
         }
 
         resources {
@@ -84,6 +97,19 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
 
     embed group: 'com.kohlschutter.junixsocket', name: 'junixsocket-native-common', version: '2.0.4'
+    embed(project(':Beezig')) {
+        exclude module: 'plugin-api'
+        exclude group: 'eu.beezig'
+    }
+}
+
+jar {
+    from {
+        duplicatesStrategy DuplicatesStrategy.EXCLUDE
+        configurations.embed.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
 }
 
 processResources
@@ -110,17 +136,4 @@ processResources
                 exclude '**/*.so'
                 exclude '**/*.jnilib'
             }
-
-            from {
-                configurations.embed.collect {
-                    zipTree(it).matching {
-                        include '**/*.dylib'
-                        include '**/*.jnilib'
-                        include '**/*.so'
-                    }.files
-                }
-            }
-
-
-
         }

@@ -60,7 +60,7 @@ public class LabyEventListener {
                     }
                     catch(Exception ignored) {}
                 }
-                The5zigAPI.getAPI().getActiveServer().getGameListener().match(s1);
+                if(The5zigAPI.getAPI().getActiveServer().getGameListener().match(s1)) bool = true;
                 return bool || The5zigAPI.getAPI().getPluginManager().fireEvent(new ChatEvent(s.replace("§r", ""), s1)).isCancelled();
             }
             else return false;

@@ -19,23 +19,19 @@
 
 package eu.beezig.laby;
 
+import eu.beezig.core.server.ServerHive;
+import eu.beezig.forge.gui.briefing.BriefingGui;
 import eu.the5zig.mod.The5zigAPI;
 import eu.the5zig.mod.event.ServerQuitEvent;
 import net.labymod.api.events.TabListEvent;
-import net.labymod.core.LabyModCore;
 import net.labymod.gui.elements.Tabs;
-import net.labymod.main.LabyMod;
 import net.labymod.servermanager.ChatDisplayAction;
 import net.labymod.servermanager.Server;
 import net.labymod.settings.elements.SettingsElement;
 import net.labymod.utils.Consumer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.PacketBuffer;
-import eu.beezig.core.BeezigMain;
-import eu.beezig.core.IHive;
-import eu.beezig.forge.gui.briefing.BriefingGui;
 
 import java.util.List;
 import java.util.Map;
@@ -57,7 +53,7 @@ public class LabyHive extends Server {
     @Override
     public void onJoin(ServerData serverData) {
         System.out.println("Joined Hive\n\n");
-        The5zigAPI.getAPI().setServerInstance(new IHive(), serverData.serverIP);
+        The5zigAPI.getAPI().setServerInstance(new ServerHive(), serverData.serverIP);
 
         Tabs.getTabUpdateListener().add(tab = stringMap -> stringMap.put("The Hive", new Class[] {BriefingGui.class}));
     }

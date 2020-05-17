@@ -19,13 +19,13 @@
 
 package eu.beezig.laby.gui;
 
+import eu.beezig.core.command.CommandManager;
+import eu.beezig.laby.LabyMain;
 import net.labymod.gui.elements.ModTextField;
 import net.labymod.main.lang.LanguageManager;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
-import eu.beezig.core.CommandManager;
-import eu.beezig.laby.LabyMain;
 
 import java.io.IOException;
 

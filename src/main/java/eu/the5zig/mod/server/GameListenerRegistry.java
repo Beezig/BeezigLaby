@@ -16,9 +16,8 @@
 
 package eu.the5zig.mod.server;
 
+import eu.beezig.core.server.ServerHive;
 import eu.the5zig.mod.The5zigAPI;
-import eu.beezig.core.IHive;
-import eu.beezig.core.listener.HiveListener;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -60,7 +59,7 @@ public class GameListenerRegistry {
 					try {
 						current = (GameMode) gameListener.getGameMode().newInstance();
 						gameListener.onGameModeJoin(current);
-						System.out.println(gameListener.getClass().getName());
+						System.out.println(current.getClass());
 
 					}
 					catch (Throwable throwable) {
@@ -80,11 +79,11 @@ public class GameListenerRegistry {
 	 * @return the current game mode or {@code null}, if the client does not play on this server instance.
 	 */
 	public GameMode getCurrentGameMode() {
-		return The5zigAPI.getAPI().getActiveServer() instanceof IHive ? current : null;
+		return The5zigAPI.getAPI().getActiveServer() instanceof ServerHive ? current : null;
 	}
 
 	public static void loadPatterns() {
-		final String path = "/hive.properties";
+		final String path = "/core/messages/hive.properties";
 		if (!messages.isEmpty()) {
 			return;
 		}
@@ -109,19 +108,20 @@ public class GameListenerRegistry {
 		}
 	}
 
-	public List<List<String>> match(final String message) {
-		final List<List<String>> matchedKeys = new ArrayList<>();
-		for (final String key : this.messages.keySet()) {
-			final List<String> match = this.match(message, key);
-			if (match != null) {
-				match.add(0, key);
-				matchedKeys.add(match);
-			}
+	public boolean match(final String message) {
+		boolean ignore = false;
+		for (final String key : messages.keySet()) {
+			final MatchResult match = this.match(message, key);
+			if(match.ignore) ignore = true;
 		}
-		return matchedKeys;
+		return ignore;
 	}
 
-	public List<String> match(final String message, final String key) {
+	public String getCurrentLobby() {
+		return "TODO CHANGE"; //TODO Change
+	}
+
+	public MatchResult match(final String message, final String key) {
 		if (!messages.containsKey(key)) {
 			return null;
 		}
@@ -134,11 +134,20 @@ public class GameListenerRegistry {
 			}
 			IPatternResult res = new IPatternResult(matches);
 			for(AbstractGameListener list : gameListeners) {
+				if(list.getGameMode() != null && current != null && !list.getGameMode().isAssignableFrom(current.getClass()))
+					continue;
 				list.onMatch(current, key, res);
 			}
-			return matches;
+			MatchResult result = new MatchResult();
+			result.ignore = res.shouldIgnore();
+			result.matches = matches;
+			return result;
 		}
-		return null;
+		return new MatchResult();
 	}
 
+	private static class MatchResult {
+		boolean ignore;
+		List<String> matches;
+	}
 }
