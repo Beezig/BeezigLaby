@@ -23,6 +23,7 @@ for dir in "${resourceDirs[@]}"
 do
     mv $dir ../resources
 done
+find . -name "package-info.java" -delete
 rm -r ../resources/META-INF
 cd -
 cp ../../../EMBED .
