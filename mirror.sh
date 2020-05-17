@@ -10,9 +10,11 @@ cd build/libs
 mkdir newSrc
 wget https://rocco.dev/beezighosting/fernflower.jar
 wget https://rocco.dev/beezighosting/simpledeobf.jar
+wget https://rocco.dev/beezighosting/bon.jar
 rm BeezigLaby-*-sources.jar
 java -jar simpledeobf.jar --input BeezigLaby-*.jar --output BeezigLaby-deobf.jar --mapFile ~/.gradle/caches/minecraft/de/oceanlabs/mcp/mcp_stable/20/srgs/notch-srg.srg --ref ~/.gradle/caches/minecraft/net/minecraft/minecraft_merged/1.8.9/minecraft_merged-1.8.9.jar
-java -jar fernflower.jar BeezigLaby-deobf.jar newSrc/
+java -jar bon.jar --inputJar BeezigLaby-deobf.jar --mappingsVer 20
+java -jar fernflower.jar BeezigLaby-deobf-deobf.jar newSrc/
 cd newSrc
 unzip BeezigLaby-*.jar
 rm BeezigLaby-*.jar
