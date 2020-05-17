@@ -9,9 +9,11 @@ resourceDirs=(lang core META-INF assets)
 cd build/libs
 mkdir newSrc
 wget https://rocco.dev/beezighosting/fernflower.jar
-java -jar fernflower.jar BeezigLaby-*.jar newSrc/
-cd newSrc
+wget https://rocco.dev/beezighosting/simpledeobf.jar
 rm BeezigLaby-*-sources.jar
+java -jar simpledeobf.jar --input BeezigLaby-*.jar --output BeezigLaby-deobf.jar --mapFile ~/.gradle/caches/minecraft/de/oceanlabs/mcp/mcp_stable/20/srgs/notch-srg.srg --ref ~/.gradle/caches/minecraft/net/minecraft/minecraft_merged/1.8.9/minecraft_merged-1.8.9.jar
+java -jar fernflower.jar BeezigLaby-deobf.jar newSrc/
+cd newSrc
 unzip BeezigLaby-*.jar
 rm BeezigLaby-*.jar
 mkdir -p src/main/java
