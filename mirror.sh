@@ -10,6 +10,7 @@ cp BeezigLaby-*.jar unzipped/src/main/resources
 cd unzipped/src/main/resources
 unzip BeezigLaby-*.jar
 rm BeezigLaby-*.jar
+rm -rf META-INF
 cd ../../../
 cp -r ../../../libs .
 mv ../../../MIRROR.md ./README.md
