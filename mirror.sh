@@ -10,7 +10,7 @@ cd build/libs
 wget https://rocco.dev/beezighosting/jd-cli.jar
 wget https://rocco.dev/beezighosting/bon.jar
 rm BeezigLaby-*-sources.jar
-java -jar bon.jar --inputJar BeezigLaby-*.jar --mappingsVer 20
+java -jar bon.jar --inputJar BeezigLaby-*.jar --mappingsVer 20 --outputJar BeezigLaby-deobf.jar
 java -jar jd-cli.jar BeezigLaby-deobf.jar -od newSrc
 cd newSrc
 mkdir -p src/main/java
