@@ -5,15 +5,13 @@ git config --global user.email "travis@travis-ci.org"
 git config --global user.name "Travis CI"
 
 resourceDirs=(lang core META-INF assets)
-
+./gradlew build -DFORGESRG=true
 cd build/libs
 wget https://rocco.dev/beezighosting/jd-cli.jar
-wget https://rocco.dev/beezighosting/simpledeobf.jar
 wget https://rocco.dev/beezighosting/bon.jar
 rm BeezigLaby-*-sources.jar
-java -jar simpledeobf.jar --input BeezigLaby-*.jar --output BeezigLaby-deobf.jar --mapFile ~/.gradle/caches/minecraft/de/oceanlabs/mcp/mcp_stable/20/srgs/notch-srg.srg --ref ~/.gradle/caches/minecraft/net/minecraft/minecraft_merged/1.8.9/minecraft_merged-1.8.9.jar
-java -jar bon.jar --inputJar BeezigLaby-deobf.jar --mappingsVer 20
-java -jar jd-cli.jar BeezigLaby-deobf-deobf.jar -od newSrc
+java -jar bon.jar --inputJar BeezigLaby-*.jar --mappingsVer 20
+java -jar jd-cli.jar BeezigLaby-deobf.jar -od newSrc
 cd newSrc
 mkdir -p src/main/java
 mv $(find * -prune -type d) src/main/java
@@ -37,3 +35,4 @@ git add --all # Add all the files
 git commit -m "BeezigLaby mirror commit" # Commit changes
 git push origin master --force # Force push the repository
 cd ../../../
+./gradlew clean
