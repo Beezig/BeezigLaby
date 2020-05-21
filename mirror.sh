@@ -13,6 +13,8 @@ rm BeezigLaby-*.jar
 rm -rf META-INF
 cd ../../../
 cp -r ../../../libs .
+touch PROVIDE
+touch EMBED
 mv ../../../MIRROR.md ./README.md
 git init # Create a blank repository
 git remote add origin https://${GIT_TOKEN}@github.com/RoccoDev/BeezigLaby-Mirror.git # Add the mirror as remote
