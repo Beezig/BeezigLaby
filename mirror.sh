@@ -20,7 +20,7 @@ for dir in "${resourceDirs[@]}"
 do
     mv $dir ../newSrc/src/main/resources
 done
-find * -prune -type d -delete
+rm -rf $(find * -prune -type d)
 mv * ../newSrc/src/main/resources
 cd ..
 
@@ -32,7 +32,7 @@ java -jar cfr.jar BeezigLaby-deobf.jar --outputdir newSrc/src/main/java
 cd newSrc/src/main/java
 find . -name "package-info.java" -delete
 rm -r ../resources/META-INF
-cd -
+cd ../../../
 cp ../../../EMBED .
 cp ../../../PROVIDE .
 cp -r ../../../libs .
