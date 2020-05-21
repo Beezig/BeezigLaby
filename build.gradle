@@ -21,6 +21,11 @@ allprojects {
     project.ext.set("laby", true)
 }
 
+compileJava {
+    options.compilerArgs << '-g'
+}
+
+
 configurations {
     embed
     compile.extendsFrom embed

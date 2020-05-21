@@ -7,21 +7,29 @@ git config --global user.name "Travis CI"
 resourceDirs=(lang core META-INF assets)
 ./gradlew build -DFORGESRG=true
 cd build/libs
-wget https://rocco.dev/beezighosting/jd-cli.jar
+mkdir extract
+mkdir -p newSrc/src/main/java
+mkdir -p newSrc/src/main/resources
+cp BeezigLaby-*.jar extract
+
+# Extract jar for resources
+cd extract
+unzip BeezigLaby-*.jar
+rm BeezigLaby-*.jar
+for dir in "${resourceDirs[@]}"
+do
+    mv $dir ../newSrc/src/main/resources
+done
+find * -prune -type d -delete
+mv * ../newSrc/src/main/resources
+cd ..
+
+wget https://rocco.dev/beezighosting/cfr.jar
 wget https://rocco.dev/beezighosting/bon.jar
 rm BeezigLaby-*-sources.jar
 java -jar bon.jar --inputJar BeezigLaby-*.jar --mappingsVer 22 --outputJar BeezigLaby-deobf.jar
-java -jar jd-cli.jar BeezigLaby-deobf.jar -od newSrc
-cd newSrc
-mkdir -p src/main/java
-mv $(find * -prune -type d) src/main/java
-mkdir -p src/main/resources
-mv * src/main/resources
-cd src/main/java
-for dir in "${resourceDirs[@]}"
-do
-    mv $dir ../resources
-done
+java -jar cfr.jar BeezigLaby-deobf.jar --outputdir newSrc/src/main/java
+cd newSrc/src/main/java
 find . -name "package-info.java" -delete
 rm -r ../resources/META-INF
 cd -
