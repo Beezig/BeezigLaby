@@ -6,8 +6,10 @@ git config --global user.name "Travis CI"
 
 cd build/libs
 mkdir -p unzipped/src/main/resources
+mkdir -p unzipped/src/main/java
 cp BeezigLaby-*.jar unzipped/src/main/resources
 cd unzipped/src/main/resources
+echo "public class Dummy {}" > ../java/Dummy.java
 unzip BeezigLaby-*.jar
 rm BeezigLaby-*.jar
 rm -rf META-INF
