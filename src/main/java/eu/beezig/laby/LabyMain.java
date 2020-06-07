@@ -19,6 +19,10 @@
 
 package eu.beezig.laby;
 
+import eu.beezig.forge.API;
+import eu.beezig.forge.api.AutovoteAPIImpl;
+import eu.beezig.forge.api.BeezigAPIImpl;
+import eu.beezig.forge.init.ClassFinder;
 import eu.beezig.laby.categories.ModuleCategories;
 import eu.beezig.laby.evt.LabyEventListener;
 import eu.beezig.laby.evt.LabyForgeListener;
@@ -68,7 +72,7 @@ public class LabyMain extends LabyModAddon {
 
         try {
             FORGE = new BeezigForgeMod();
-        } catch(Exception ignored) {} // Exception is thrown when the user is on Labymod Vanilla
+        } catch(Exception ignored) { } // Exception is thrown when the user is on Labymod Vanilla
     }
 
     @Override
@@ -87,5 +91,26 @@ public class LabyMain extends LabyModAddon {
 
     public boolean isForge() {
         return FORGE != null;
+    }
+
+    static void initApi() {
+        try {
+            ClassFinder.init();
+
+            Class api = ClassFinder.findClass("eu.beezig.core.api.BeezigAPI");
+
+            Object privInst = api.getMethod("get")
+                    .invoke(null);
+            API.inst = BeezigAPIImpl.fromObject(privInst);
+
+            API.autovote = AutovoteAPIImpl.fromObject(((Class)(api.getMethod("getAutovoter").invoke(privInst))).newInstance());
+
+            api.getMethod("registerListener", Object.class)
+                    .invoke(privInst,
+                            Class.forName("eu.beezig.forge.listener.ForgeListenerImpl", true, LabyMain.class.getClassLoader())
+                                    .newInstance());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

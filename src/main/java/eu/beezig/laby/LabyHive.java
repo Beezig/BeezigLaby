@@ -56,10 +56,10 @@ public class LabyHive extends Server {
 
     @Override
     public void onJoin(ServerData serverData) {
-        System.out.println("Joined Hive\n\n");
         The5zigAPI.getAPI().setServerInstance(new IHive(), serverData.serverIP);
 
         Tabs.getTabUpdateListener().add(tab = stringMap -> stringMap.put("The Hive", new Class[] {BriefingGui.class}));
+        LabyMain.initApi();
     }
 
     @Override

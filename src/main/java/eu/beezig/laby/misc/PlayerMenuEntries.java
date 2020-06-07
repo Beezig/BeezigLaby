@@ -19,6 +19,11 @@
 
 package eu.beezig.laby.misc;
 
+import eu.beezig.core.ActiveGame;
+import eu.beezig.core.CommandManager;
+import eu.beezig.core.IHive;
+import eu.beezig.core.advancedrecords.AdvancedRecords;
+import eu.beezig.core.games.TIMV;
 import eu.beezig.laby.gui.ReportReasonScreen;
 import eu.the5zig.mod.The5zigAPI;
 import io.netty.util.internal.ThreadLocalRandom;
@@ -29,12 +34,6 @@ import net.labymod.user.util.UserActionEntry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.player.EntityPlayer;
-import eu.beezig.core.ActiveGame;
-import eu.beezig.core.CommandManager;
-import eu.beezig.core.IHive;
-import eu.beezig.core.advancedrecords.AdvancedRecords;
-import eu.beezig.core.games.DR;
-import eu.beezig.core.games.TIMV;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -100,7 +99,7 @@ public class PlayerMenuEntries {
 
             @Override
             public boolean canAppear(User user, EntityPlayer entityPlayer, NetworkPlayerInfo networkPlayerInfo) {
-                return ActiveGame.is("dr") && DR.activeMap != null;
+                return ActiveGame.is("dr");
             }
         });
 
