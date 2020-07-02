@@ -176,6 +176,8 @@ public class StringItem extends SimpleModule {
             LabyMain.SELF.saveConfig();
         });
 	    subs.add(elem);
+		LabyMain.SELF.getConfig().addProperty("bzg_mdl_" + StringItem.this.key + "_" + key, attr);
+		LabyMain.SELF.saveConfig();
     }
 
 	public void registerSettings() {}
