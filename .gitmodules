@@ -5,3 +5,4 @@
 [submodule "BeezigForge"]
 	path = BeezigForge
 	url = https://github.com/Beezig/BeezigForge.git
+	branch = rewrite

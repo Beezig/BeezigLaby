@@ -20,11 +20,13 @@
 package eu.beezig.laby;
 
 import eu.beezig.core.Beezig;
+import eu.beezig.core.net.session.NetSessionManager;
 import eu.beezig.forge.BeezigForgeMod;
 import eu.beezig.laby.categories.ModuleCategories;
 import eu.beezig.laby.evt.LabyEventListener;
 import eu.beezig.laby.evt.LabyForgeListener;
 import eu.beezig.laby.misc.PlayerMenuEntries;
+import eu.beezig.laby.net.LabySessionProvider;
 import eu.the5zig.mod.The5zigAPI;
 import eu.the5zig.mod.server.GameListenerRegistry;
 import eu.the5zig.util.BeezigI18N;
@@ -46,6 +48,7 @@ public class LabyMain extends LabyModAddon {
     @Override
     public void onEnable() {
         SELF = this;
+        NetSessionManager.provider = new LabySessionProvider();
         INSTANCE = new Beezig(true, AddonLoader.getConfigDirectory());
         LABY = getApi();
         BeezigI18N.init();
