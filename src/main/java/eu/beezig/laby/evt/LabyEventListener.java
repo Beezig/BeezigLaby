@@ -31,6 +31,7 @@ import net.labymod.api.EventManager;
 import net.labymod.api.events.MessageSendEvent;
 import net.labymod.api.events.PluginMessageEvent;
 import net.minecraft.network.play.server.S02PacketChat;
+import net.minecraft.network.play.server.S41PacketServerDifficulty;
 import net.minecraft.network.play.server.S45PacketTitle;
 import eu.beezig.laby.LabyMain;
 
@@ -77,16 +78,6 @@ public class LabyEventListener {
         });
 
         mgr.register((PluginMessageEvent) (s, packetBuffer) -> {
-            if(s.equals("MC|Brand")) { // Switched servers
-                if (The5zigAPI.getAPI().getActiveServer() != null) {
-                    for (AbstractGameListener list : GameListenerRegistry.gameListeners) {
-                        GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
-                        try {
-                            list.onServerConnect(gm);
-                        } catch (Exception ignored) {}
-                    }
-                }
-            }
         });
 
         
@@ -115,6 +106,16 @@ public class LabyEventListener {
                         GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
                         try {
                             list.onActionBar(gm, pkt.getChatComponent().getUnformattedText());
+                        } catch (Exception ignored) {}
+                    }
+                }
+            }
+            else if(o instanceof S41PacketServerDifficulty) {
+                if (The5zigAPI.getAPI().getActiveServer() != null) {
+                    for (AbstractGameListener list : GameListenerRegistry.gameListeners) {
+                        GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
+                        try {
+                            list.onServerConnect(gm);
                         } catch (Exception ignored) {}
                     }
                 }
