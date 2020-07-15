@@ -47,7 +47,6 @@ public class LabyForgeListener {
         if(The5zigAPI.getAPI().getActiveServer() == null) return;
         if(The5zigAPI.getAPI().getActiveServer().getGameListener() == null) return;
         GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
-        if(gm == null) return;
         for(AbstractGameListener list : GameListenerRegistry.gameListeners) {
             if(!LabyEventListener.getTypeParam(list).isAssignableFrom(gm.getClass())) continue;
             try {
