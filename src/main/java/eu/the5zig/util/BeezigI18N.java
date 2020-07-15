@@ -22,6 +22,7 @@ public class BeezigI18N {
     }
 
     public static String s(String key, Object... format) {
+        if(!strings.containsKey(key)) return key;
         if(format.length == 0)
         return strings.getString(key);
         else return String.format(strings.getString(key), format);
