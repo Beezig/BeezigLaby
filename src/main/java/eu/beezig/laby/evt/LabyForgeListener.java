@@ -19,11 +19,13 @@
 
 package eu.beezig.laby.evt;
 
+import eu.beezig.forge.gui.pointstag.TagSettingsGui;
 import eu.the5zig.mod.The5zigAPI;
 import eu.the5zig.mod.event.KeyPressEvent;
 import eu.the5zig.mod.server.AbstractGameListener;
 import eu.the5zig.mod.server.GameListenerRegistry;
 import eu.the5zig.mod.server.GameMode;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
@@ -37,6 +39,10 @@ public class LabyForgeListener {
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent evt) {
+        if(LabyEventListener.displayPointTagsGui) {
+            LabyEventListener.displayPointTagsGui = false;
+            Minecraft.getMinecraft().displayGuiScreen(new TagSettingsGui());
+        }
         The5zigAPI.getAPI().getPluginManager().fireEvent(new eu.the5zig.mod.event.TickEvent());
         if(The5zigAPI.getAPI().getActiveServer() == null) return;
         if(The5zigAPI.getAPI().getActiveServer().getGameListener() == null) return;

@@ -19,6 +19,9 @@
 
 package eu.beezig.laby.evt;
 
+import eu.beezig.core.command.Command;
+import eu.beezig.core.command.CommandManager;
+import eu.beezig.forge.gui.pointstag.TagSettingsGui;
 import eu.beezig.forge.modules.pointstag.render.PointsTagRenderListener;
 import eu.beezig.laby.LabyMain;
 import eu.the5zig.mod.The5zigAPI;
@@ -34,7 +37,6 @@ import net.labymod.api.events.MessageSendEvent;
 import net.labymod.api.events.PluginMessageEvent;
 import net.labymod.user.User;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.S02PacketChat;
@@ -48,9 +50,10 @@ import java.lang.reflect.ParameterizedType;
  */
 public class LabyEventListener {
 
+    static boolean displayPointTagsGui;
+
     public static void init() {
         EventManager mgr = LabyMain.LABY.getEventManager();
-
         mgr.register((s, s1) -> {
             boolean bool = false;
             boolean apply = true;
@@ -93,6 +96,23 @@ public class LabyEventListener {
                 if(entt instanceof EntityPlayer) {
                     EntityPlayer p = (EntityPlayer)entt;
                     listener.doRender(p, x, y, z, pTicks, renderer);
+                }
+            });
+            CommandManager.commandExecutors.add(new Command() {
+                @Override
+                public String getName() {
+                    return "ptags";
+                }
+
+                @Override
+                public String[] getAliases() {
+                    return new String[] {"/pointtags", "/pointstag"};
+                }
+
+                @Override
+                public boolean execute(String[] args) {
+                    displayPointTagsGui = true;
+                    return true;
                 }
             });
         }
