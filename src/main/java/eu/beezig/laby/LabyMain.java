@@ -20,8 +20,10 @@
 package eu.beezig.laby;
 
 import eu.beezig.core.Beezig;
+import eu.beezig.core.api.BeezigForge;
 import eu.beezig.core.net.session.NetSessionManager;
 import eu.beezig.forge.BeezigForgeMod;
+import eu.beezig.forge.modules.pointstag.render.PointsTagRenderListener;
 import eu.beezig.laby.categories.ModuleCategories;
 import eu.beezig.laby.evt.LabyEventListener;
 import eu.beezig.laby.evt.LabyForgeListener;
@@ -34,6 +36,9 @@ import net.labymod.addon.AddonLoader;
 import net.labymod.api.LabyModAPI;
 import net.labymod.api.LabyModAddon;
 import net.labymod.settings.elements.SettingsElement;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.List;
 import java.util.UUID;
@@ -44,11 +49,17 @@ public class LabyMain extends LabyModAddon {
     public static LabyModAPI LABY;
     public static BeezigForgeMod FORGE;
     public static LabyMain SELF;
+    public static boolean IS_FORGE = false;
 
     @Override
     public void onEnable() {
         SELF = this;
         NetSessionManager.provider = new LabySessionProvider();
+        try {
+            Class.forName("net.minecraftforge.client.GuiIngameForge");
+            IS_FORGE = true;
+        }
+        catch (ClassNotFoundException ex) {}
         INSTANCE = new Beezig(true, AddonLoader.getConfigDirectory());
         LABY = getApi();
         BeezigI18N.init();

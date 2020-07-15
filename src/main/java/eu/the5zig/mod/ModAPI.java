@@ -79,7 +79,7 @@ public class ModAPI {
 	 * @return true, if we are in a forge environment.
 	 */
 	public boolean isForgeEnvironment() {
-		return false;
+		return LabyMain.IS_FORGE;
 	}
 
 	/**

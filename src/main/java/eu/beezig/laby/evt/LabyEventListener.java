@@ -19,6 +19,8 @@
 
 package eu.beezig.laby.evt;
 
+import eu.beezig.forge.modules.pointstag.render.PointsTagRenderListener;
+import eu.beezig.laby.LabyMain;
 import eu.the5zig.mod.The5zigAPI;
 import eu.the5zig.mod.event.ActionBarEvent;
 import eu.the5zig.mod.event.ChatEvent;
@@ -30,10 +32,14 @@ import eu.the5zig.mod.server.GameMode;
 import net.labymod.api.EventManager;
 import net.labymod.api.events.MessageSendEvent;
 import net.labymod.api.events.PluginMessageEvent;
+import net.labymod.user.User;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.network.play.server.S41PacketServerDifficulty;
 import net.minecraft.network.play.server.S45PacketTitle;
-import eu.beezig.laby.LabyMain;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -80,7 +86,22 @@ public class LabyEventListener {
         mgr.register((PluginMessageEvent) (s, packetBuffer) -> {
         });
 
-        
+        if(!The5zigAPI.getAPI().isForgeEnvironment()) {
+            PointsTagRenderListener listener = new PointsTagRenderListener();
+            RenderPlayer renderer = new RenderPlayer(Minecraft.getMinecraft().getRenderManager());
+            mgr.register((entt, x, y, z, pTicks) -> {
+                if(entt instanceof EntityPlayer) {
+                    EntityPlayer p = (EntityPlayer)entt;
+                    listener.doRender(p, x, y, z, pTicks, renderer);
+                }
+            });
+        }
+        PointsTagRenderListener.heightFunc = uuid -> {
+            User user = LabyMain.LABY.getUserManager().getUser(uuid);
+            if(user == null) return 0f;
+            return user.getMaxNameTagHeight();
+        };
+
         mgr.registerOnIncomingPacket(o -> {
             if(The5zigAPI.getAPI().getActiveServer() == null) return;
             if(o instanceof S45PacketTitle) {
