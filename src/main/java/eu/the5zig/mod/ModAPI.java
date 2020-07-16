@@ -18,6 +18,7 @@ package eu.the5zig.mod;
 
 import com.mojang.authlib.GameProfile;
 import eu.the5zig.mod.gui.IOverlay;
+import eu.the5zig.mod.gui.LabyOverlay;
 import eu.the5zig.mod.gui.ingame.ItemStack;
 import eu.the5zig.mod.gui.ingame.Scoreboard;
 import eu.the5zig.mod.modules.GameModeItem;
@@ -175,7 +176,7 @@ public class ModAPI {
 	 * @return a new overlay
 	 */
 	public IOverlay createOverlay() {
-		return null;
+		return new LabyOverlay();
 	}
 
 	/**
