@@ -21,6 +21,8 @@ package eu.beezig.laby.evt;
 
 import eu.beezig.core.command.Command;
 import eu.beezig.core.command.CommandManager;
+import eu.beezig.core.util.task.WorldTask;
+import eu.beezig.forge.gui.daily.DailyGui;
 import eu.beezig.forge.gui.pointstag.TagSettingsGui;
 import eu.beezig.forge.modules.pointstag.render.PointsTagRenderListener;
 import eu.beezig.laby.LabyMain;
@@ -49,8 +51,6 @@ import java.lang.reflect.ParameterizedType;
  * Created by Rocco on 05/01/2019.
  */
 public class LabyEventListener {
-
-    static boolean displayPointTagsGui;
 
     public static void init() {
         EventManager mgr = LabyMain.LABY.getEventManager();
@@ -111,7 +111,24 @@ public class LabyEventListener {
 
                 @Override
                 public boolean execute(String[] args) {
-                    displayPointTagsGui = true;
+                    WorldTask.submit(() -> Minecraft.getMinecraft().displayGuiScreen(new TagSettingsGui()));
+                    return true;
+                }
+            });
+            CommandManager.commandExecutors.add(new Command() {
+                @Override
+                public String getName() {
+                    return "daily";
+                }
+
+                @Override
+                public String[] getAliases() {
+                    return new String[] {"/daily"};
+                }
+
+                @Override
+                public boolean execute(String[] args) {
+                    WorldTask.submit(() -> Minecraft.getMinecraft().displayGuiScreen(new DailyGui()));
                     return true;
                 }
             });

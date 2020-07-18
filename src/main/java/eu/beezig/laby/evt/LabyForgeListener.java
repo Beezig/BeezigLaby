@@ -36,13 +36,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
  */
 public class LabyForgeListener {
 
-
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent evt) {
-        if(LabyEventListener.displayPointTagsGui) {
-            LabyEventListener.displayPointTagsGui = false;
-            Minecraft.getMinecraft().displayGuiScreen(new TagSettingsGui());
-        }
         The5zigAPI.getAPI().getPluginManager().fireEvent(new eu.the5zig.mod.event.TickEvent());
         if(The5zigAPI.getAPI().getActiveServer() == null) return;
         if(The5zigAPI.getAPI().getActiveServer().getGameListener() == null) return;
