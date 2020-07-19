@@ -20,10 +20,8 @@
 package eu.beezig.laby;
 
 import eu.beezig.core.Beezig;
-import eu.beezig.core.api.BeezigForge;
 import eu.beezig.core.net.session.NetSessionManager;
 import eu.beezig.forge.BeezigForgeMod;
-import eu.beezig.forge.modules.pointstag.render.PointsTagRenderListener;
 import eu.beezig.laby.categories.ModuleCategories;
 import eu.beezig.laby.evt.LabyEventListener;
 import eu.beezig.laby.evt.LabyForgeListener;
@@ -36,9 +34,6 @@ import net.labymod.addon.AddonLoader;
 import net.labymod.api.LabyModAPI;
 import net.labymod.api.LabyModAddon;
 import net.labymod.settings.elements.SettingsElement;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.List;
 import java.util.UUID;
