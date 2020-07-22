@@ -43,10 +43,12 @@ public class LabyForgeListener {
         if(The5zigAPI.getAPI().getActiveServer().getGameListener() == null) return;
         GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
         for(AbstractGameListener list : GameListenerRegistry.gameListeners) {
-            if(!LabyEventListener.getTypeParam(list).isAssignableFrom(gm.getClass())) continue;
-            try {
-                list.onTick(gm);
-            } catch (Exception ignored) {}
+            if((gm == null && list.getGameMode() == GameMode.class) || (gm != null && LabyEventListener.getTypeParam(list).isAssignableFrom(gm.getClass()))) {
+                try {
+                    list.onTick(gm);
+                } catch (Exception ignored) {
+                }
+            }
         }
     }
 
