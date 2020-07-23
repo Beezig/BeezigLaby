@@ -25,6 +25,7 @@ import eu.beezig.core.util.task.WorldTask;
 import eu.beezig.forge.gui.daily.DailyGui;
 import eu.beezig.forge.gui.pointstag.TagSettingsGui;
 import eu.beezig.forge.modules.pointstag.render.PointsTagRenderListener;
+import eu.beezig.forge.modules.shuffle.ShuffleForgeListener;
 import eu.beezig.laby.LabyMain;
 import eu.the5zig.mod.The5zigAPI;
 import eu.the5zig.mod.event.ActionBarEvent;
@@ -44,6 +45,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.network.play.server.S41PacketServerDifficulty;
 import net.minecraft.network.play.server.S45PacketTitle;
+import net.minecraft.util.EnumChatFormatting;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -70,6 +72,7 @@ public class LabyEventListener {
                     }
                     catch(Exception ignored) {}
                 }
+                s1 = EnumChatFormatting.getTextWithoutFormattingCodes(s1);
                 if(The5zigAPI.getAPI().getActiveServer().getGameListener().match(s1)) bool = true;
                 return bool || The5zigAPI.getAPI().getPluginManager().fireEvent(new ChatEvent(s.replace("§r", ""), s1)).isCancelled();
             }
@@ -90,6 +93,7 @@ public class LabyEventListener {
         });
 
         if(!The5zigAPI.getAPI().isForgeEnvironment()) {
+            LabyMain.LABY.registerForgeListener(new ShuffleForgeListener());
             PointsTagRenderListener listener = new PointsTagRenderListener();
             RenderPlayer renderer = new RenderPlayer(Minecraft.getMinecraft().getRenderManager());
             mgr.register((entt, x, y, z, pTicks) -> {
