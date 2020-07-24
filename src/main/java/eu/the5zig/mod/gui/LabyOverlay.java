@@ -15,7 +15,7 @@ public class LabyOverlay implements IOverlay {
 
     @Override
     public void displayMessage(String message) {
-        displayMessage(message, null);
+        displayMessage("Beezig", message);
     }
 
     @Override
