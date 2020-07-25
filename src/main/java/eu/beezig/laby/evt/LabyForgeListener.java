@@ -19,14 +19,11 @@
 
 package eu.beezig.laby.evt;
 
-import eu.beezig.forge.gui.pointstag.TagSettingsGui;
 import eu.the5zig.mod.The5zigAPI;
 import eu.the5zig.mod.event.KeyPressEvent;
 import eu.the5zig.mod.server.AbstractGameListener;
 import eu.the5zig.mod.server.GameListenerRegistry;
 import eu.the5zig.mod.server.GameMode;
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -43,7 +40,7 @@ public class LabyForgeListener {
         if(The5zigAPI.getAPI().getActiveServer().getGameListener() == null) return;
         GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
         for(AbstractGameListener list : GameListenerRegistry.gameListeners) {
-            if((gm == null && list.getGameMode() == GameMode.class) || (gm != null && LabyEventListener.getTypeParam(list).isAssignableFrom(gm.getClass()))) {
+            if((gm == null && list.getGameMode() == null) || (gm != null && LabyEventListener.getTypeParam(list).isAssignableFrom(gm.getClass()))) {
                 try {
                     list.onTick(gm);
                 } catch (Exception ignored) {

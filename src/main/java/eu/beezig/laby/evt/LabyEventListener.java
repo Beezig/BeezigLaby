@@ -82,7 +82,6 @@ public class LabyEventListener {
         mgr.register((MessageSendEvent) s -> The5zigAPI.getAPI().getPluginManager().fireEvent(new ChatSendEvent(s)).isCancelled());
 
         mgr.registerOnJoin(serverData -> {
-
         });
 
         mgr.registerOnQuit(serverData -> {
@@ -153,8 +152,8 @@ public class LabyEventListener {
                 if(pkt.getType() == S45PacketTitle.Type.SUBTITLE) subtitle = pkt.getMessage().getFormattedText();
 
                 The5zigAPI.getAPI().getPluginManager().fireEvent(new TitleEvent(title, subtitle));
+                GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
                 for (AbstractGameListener list : GameListenerRegistry.gameListeners) {
-                    GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
                     try {
                         list.onTitle(gm, title.isEmpty() ? null : title, subtitle.isEmpty() ? null : subtitle);
                     } catch (Exception ignored) {}
@@ -164,8 +163,8 @@ public class LabyEventListener {
                 S02PacketChat pkt = (S02PacketChat)o;
                 if(pkt.getType() == 2) {
                     The5zigAPI.getAPI().getPluginManager().fireEvent(new ActionBarEvent(pkt.getChatComponent().getUnformattedText()));
+                    GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
                     for (AbstractGameListener list : GameListenerRegistry.gameListeners) {
-                        GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
                         try {
                             list.onActionBar(gm, pkt.getChatComponent().getUnformattedText());
                         } catch (Exception ignored) {}
@@ -174,8 +173,8 @@ public class LabyEventListener {
             }
             else if(o instanceof S41PacketServerDifficulty) {
                 if (The5zigAPI.getAPI().getActiveServer() != null) {
+                    GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
                     for (AbstractGameListener list : GameListenerRegistry.gameListeners) {
-                        GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
                         try {
                             list.onServerConnect(gm);
                         } catch (Exception ignored) {}

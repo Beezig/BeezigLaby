@@ -22,7 +22,11 @@ package eu.beezig.laby;
 import eu.beezig.core.server.ServerHive;
 import eu.beezig.forge.gui.briefing.BriefingGui;
 import eu.the5zig.mod.The5zigAPI;
+import eu.the5zig.mod.event.ServerJoinEvent;
 import eu.the5zig.mod.event.ServerQuitEvent;
+import eu.the5zig.mod.server.AbstractGameListener;
+import eu.the5zig.mod.server.GameListenerRegistry;
+import eu.the5zig.mod.server.GameMode;
 import net.labymod.api.events.TabListEvent;
 import net.labymod.gui.elements.Tabs;
 import net.labymod.servermanager.ChatDisplayAction;
@@ -52,18 +56,22 @@ public class LabyHive extends Server {
 
     @Override
     public void onJoin(ServerData serverData) {
-        System.out.println("Joined Hive\n\n");
         The5zigAPI.getAPI().setServerInstance(new ServerHive(), serverData.serverIP);
-
+        GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
+        for (AbstractGameListener list : GameListenerRegistry.gameListeners) {
+            try {
+                list.onServerConnect(gm);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         Tabs.getTabUpdateListener().add(tab = stringMap -> stringMap.put("The Hive", new Class[] {BriefingGui.class}));
     }
 
     @Override
     public void reset() {
-        System.out.println("Left Hive \n\n");
         The5zigAPI.getAPI().setServerInstance(null, null);
         The5zigAPI.getAPI().getPluginManager().fireEvent(new ServerQuitEvent());
-
         Tabs.getTabUpdateListener().remove(tab);
     }
 
