@@ -74,8 +74,9 @@ public abstract class GameModeItem<T extends GameMode> extends StringItem {
 		if (activeServer != null && activeServer.getGameListener().getCurrentGameMode() != null
 				&& modeClass.isAssignableFrom(activeServer.getGameListener().getCurrentGameMode().getClass())) {
 			if (state != null && state.length != 0) {
+				GameState current = activeServer.getGameListener().getCurrentGameMode().getState();
 				for (GameState gameState : state) {
-					if (getGameMode().getState() == gameState) {
+					if (current == gameState) {
 						return getValue(false) != null;
 					}
 				}

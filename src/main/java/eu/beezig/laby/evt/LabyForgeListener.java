@@ -40,7 +40,7 @@ public class LabyForgeListener {
         if(The5zigAPI.getAPI().getActiveServer().getGameListener() == null) return;
         GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
         for(AbstractGameListener list : GameListenerRegistry.gameListeners) {
-            if((gm == null && list.getGameMode() == null) || (gm != null && LabyEventListener.getTypeParam(list).isAssignableFrom(gm.getClass()))) {
+            if((list.getGameMode() == null) || (gm != null && LabyEventListener.getTypeParam(list).isAssignableFrom(gm.getClass()))) {
                 try {
                     list.onTick(gm);
                 } catch (Exception ignored) {

@@ -16,6 +16,7 @@
 
 package eu.the5zig.mod.modules;
 
+import eu.beezig.core.Beezig;
 import eu.beezig.core.util.text.Message;
 import eu.beezig.laby.LabyMain;
 import eu.beezig.laby.categories.ModuleCategories;
@@ -54,7 +55,12 @@ public class StringItem extends SimpleModule {
 
 	@Override
 	public boolean isShown() {
-		return shouldRender(false) && super.isShown();
+		try {
+			return shouldRender(false) && super.isShown();
+		} catch (Exception ex) {
+			Beezig.logger.error("Exception in shouldRender", ex);
+			return false;
+		}
 	}
 
 	/**
@@ -124,7 +130,7 @@ public class StringItem extends SimpleModule {
 		} catch(Exception e) {
 			System.out.println("Exception occurred while rendering " + key);
 			e.printStackTrace();
-			return "Error?";
+			return "Error";
 		}
 	}
 
