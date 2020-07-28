@@ -28,10 +28,7 @@ import eu.beezig.forge.modules.pointstag.render.PointsTagRenderListener;
 import eu.beezig.forge.modules.shuffle.ShuffleForgeListener;
 import eu.beezig.laby.LabyMain;
 import eu.the5zig.mod.The5zigAPI;
-import eu.the5zig.mod.event.ActionBarEvent;
-import eu.the5zig.mod.event.ChatEvent;
-import eu.the5zig.mod.event.ChatSendEvent;
-import eu.the5zig.mod.event.TitleEvent;
+import eu.the5zig.mod.event.*;
 import eu.the5zig.mod.server.AbstractGameListener;
 import eu.the5zig.mod.server.GameListenerRegistry;
 import eu.the5zig.mod.server.GameMode;
@@ -85,7 +82,6 @@ public class LabyEventListener {
         });
 
         mgr.registerOnQuit(serverData -> {
-
         });
 
         mgr.register((PluginMessageEvent) (s, packetBuffer) -> {
