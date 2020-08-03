@@ -48,6 +48,12 @@ compileJava {
     options.encoding = 'UTF-8'
 }
 
+jar {
+    manifest.attributes(
+            'FMLCorePlugin': 'net.labymod.core.asm.LabyModCoreMod',
+            'FMLCorePluginContainsFMLMod': 'true'
+    )
+}
 
 reobf {
     jar {
@@ -99,7 +105,9 @@ dependencies {
         exclude module: 'plugin-api'
         exclude group: 'eu.beezig'
         exclude module: 'lwjgl'
+        exclude group: 'asm'
     }
+    compile group: 'org.ow2.asm', name: 'asm-debug-all', version: '5.2'
 }
 
 jar {

@@ -6,6 +6,6 @@
   "category": 3,
   "mainClass": "eu.beezig.laby.LabyMain",
   "icon": "https://rocco.dev/beezighosting/laby/icon/logo.png",
-
+  "transformerClass": "eu.beezig.laby.asm.BeezigChatTransformer",
   "version": 1
 }

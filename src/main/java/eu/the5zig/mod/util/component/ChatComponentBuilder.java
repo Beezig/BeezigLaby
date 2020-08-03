@@ -18,8 +18,11 @@
 
 package eu.the5zig.mod.util.component;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableMap;
 import eu.the5zig.mod.util.component.style.MessageAction;
+import eu.the5zig.mod.util.component.style.MessageStyle;
 import eu.the5zig.util.minecraft.ChatColor;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
@@ -49,12 +52,12 @@ public class ChatComponentBuilder {
         }
     }
 
-    private static final Map<MessageAction.Action, ClickEvent.Action> clickActions = ImmutableMap.of(
+    private static final BiMap<MessageAction.Action, ClickEvent.Action> clickActions = ImmutableBiMap.of(
             MessageAction.Action.OPEN_URL, ClickEvent.Action.OPEN_URL,
             MessageAction.Action.OPEN_FILE, ClickEvent.Action.OPEN_FILE,
             MessageAction.Action.RUN_COMMAND, ClickEvent.Action.RUN_COMMAND,
             MessageAction.Action.SUGGEST_COMMAND, ClickEvent.Action.SUGGEST_COMMAND);
-    private static final Map<MessageAction.Action, HoverEvent.Action> hoverActions = ImmutableMap.of(MessageAction.Action.SHOW_TEXT, HoverEvent.Action.SHOW_TEXT);
+    private static final BiMap<MessageAction.Action, HoverEvent.Action> hoverActions = ImmutableBiMap.of(MessageAction.Action.SHOW_TEXT, HoverEvent.Action.SHOW_TEXT);
 
     public static IChatComponent fromInterface(MessageComponent api) {
         IChatComponent text = fromLegacyText(api.getText());
@@ -72,6 +75,22 @@ public class ChatComponentBuilder {
             text.appendSibling(fromInterface(sibling));
         }
         return text;
+    }
+
+    public static MessageComponent toInterface(IChatComponent mc) {
+        MessageComponent base = new MessageComponent(mc.getFormattedText());
+        ChatStyle style = mc.getChatStyle();
+        if(style != null) {
+            MessageAction click = style.getChatClickEvent() == null ? null
+                    : new MessageAction(clickActions.inverse().get(style.getChatClickEvent().getAction()), style.getChatClickEvent().getValue());
+            MessageAction hover = style.getChatHoverEvent() == null ? null
+                    : new MessageAction(hoverActions.inverse().get(style.getChatHoverEvent().getAction()), toInterface(style.getChatHoverEvent().getValue()));
+            base.setStyle(new MessageStyle(hover, click));
+        }
+        for(IChatComponent sibling : mc.getSiblings()) {
+            base.getSiblings().add(toInterface(sibling));
+        }
+        return base;
     }
 
     public static IChatComponent fromLegacyText(String message) {

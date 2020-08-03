@@ -32,6 +32,7 @@ import eu.the5zig.mod.event.*;
 import eu.the5zig.mod.server.AbstractGameListener;
 import eu.the5zig.mod.server.GameListenerRegistry;
 import eu.the5zig.mod.server.GameMode;
+import eu.the5zig.mod.util.component.ChatComponentBuilder;
 import net.labymod.api.EventManager;
 import net.labymod.api.events.MessageSendEvent;
 import net.labymod.api.events.PluginMessageEvent;
@@ -53,28 +54,6 @@ public class LabyEventListener {
 
     public static void init() {
         EventManager mgr = LabyMain.LABY.getEventManager();
-        mgr.register((s, s1) -> {
-            boolean bool = false;
-            boolean apply = true;
-            if(The5zigAPI.getAPI().getActiveServer() != null) {
-                for (AbstractGameListener list : GameListenerRegistry.gameListeners) {
-                    GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
-                    try {
-                        if(!getTypeParam(list).isAssignableFrom(gm.getClass())) continue;
-                        boolean result = list.onServerChat(gm, s.replace("§r", ""));
-                        if (apply && result) {
-                            bool = result;
-                            apply = false;
-                        }
-                    }
-                    catch(Exception ignored) {}
-                }
-                s1 = EnumChatFormatting.getTextWithoutFormattingCodes(s1);
-                if(The5zigAPI.getAPI().getActiveServer().getGameListener().match(s1)) bool = true;
-                return bool || The5zigAPI.getAPI().getPluginManager().fireEvent(new ChatEvent(s.replace("§r", ""), s1)).isCancelled();
-            }
-            else return false;
-        });
 
         mgr.register((MessageSendEvent) s -> The5zigAPI.getAPI().getPluginManager().fireEvent(new ChatSendEvent(s)).isCancelled());
 
@@ -184,5 +163,30 @@ public class LabyEventListener {
         return (Class)
                 ((ParameterizedType)o.getClass().getGenericSuperclass())
                         .getActualTypeArguments()[0];
+    }
+
+    public static boolean onChatMessage(S02PacketChat packet) {
+        String message = packet.getChatComponent().getFormattedText().replace("§r", "");
+        String unformatted = EnumChatFormatting.getTextWithoutFormattingCodes(packet.getChatComponent().getUnformattedText());
+        boolean bool = false;
+        boolean apply = true;
+        if(The5zigAPI.getAPI().getActiveServer() != null) {
+            for (AbstractGameListener list : GameListenerRegistry.gameListeners) {
+                GameMode gm = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
+                try {
+                    if(!getTypeParam(list).isAssignableFrom(gm.getClass())) continue;
+                    boolean result = list.onServerChat(gm, message);
+                    if (apply && result) {
+                        bool = result;
+                        apply = false;
+                    }
+                }
+                catch(Exception ignored) {}
+            }
+            if(The5zigAPI.getAPI().getActiveServer().getGameListener().match(unformatted)) bool = true;
+            return bool || The5zigAPI.getAPI().getPluginManager()
+                    .fireEvent(new ChatEvent(message, ChatComponentBuilder.toInterface(packet.getChatComponent()))).isCancelled();
+        }
+        else return false;
     }
 }
