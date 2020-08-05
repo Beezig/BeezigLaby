@@ -4,7 +4,6 @@ import com.mojang.authlib.GameProfile;
 import eu.beezig.forge.badge.BadgeRenderer;
 import net.labymod.core.asm.global.ClassEditor;
 import net.minecraft.launchwrapper.IClassTransformer;
-import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
