@@ -2,6 +2,7 @@ package eu.beezig.laby.asm;
 
 import com.mojang.authlib.GameProfile;
 import eu.beezig.forge.badge.BadgeRenderer;
+import net.labymod.core.asm.global.ClassEditor;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.objectweb.asm.ClassReader;
@@ -127,6 +128,19 @@ public class BeezigTransformer implements IClassTransformer {
             classNode.accept(classWriter);
             return classWriter.toByteArray();
         }
+
+        if("bcy".equals(name)) {
+            System.out.println("[BeezigLaby-ASM] Transforming bcy (NetHandlerPlayClient)");
+            ClassEditor editor = new BeezigChatVisitor();
+            ClassNode node = new ClassNode();
+            ClassReader reader = new ClassReader(basicClass);
+            reader.accept(node, 0);
+            editor.accept(name, node);
+            ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+            node.accept(writer);
+            return writer.toByteArray();
+        }
+
         return basicClass;
     }
 }
