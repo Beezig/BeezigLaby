@@ -67,6 +67,8 @@ sourceSets {
             srcDirs 'src/main/java'
             srcDirs 'Beezig/src/main/java'
             srcDirs 'BeezigForge/src/main/java'
+            // Don't use BeezigForge's ASM, for BeezigLaby has its own ASM transformers
+            exclude 'eu/beezig/forge/asm/**'
         }
 
         resources {
