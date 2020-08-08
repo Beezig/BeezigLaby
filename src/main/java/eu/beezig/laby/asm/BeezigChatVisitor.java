@@ -55,7 +55,7 @@ public class BeezigChatVisitor extends ClassEditor {
     private void addInsns(InsnList list, LabelNode label) {
         list.add(new VarInsnNode(Opcodes.ALOAD, 1));
         list.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                "eu/beezig/laby/evt/LabyEventListener", "onChatMessage", "(Lfy;)Z"));
+                "eu/beezig/laby/evt/LabyEventListener", "onChatMessage", "(Lfy;)Z", false));
         list.add(new JumpInsnNode(Opcodes.IFNE, label));
     }
 }
