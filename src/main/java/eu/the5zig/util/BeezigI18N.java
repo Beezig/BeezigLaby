@@ -1,5 +1,7 @@
 package eu.the5zig.util;
 
+import eu.beezig.core.config.Settings;
+import eu.beezig.core.config.i18n.LanguageSetting;
 import net.minecraft.client.Minecraft;
 
 import java.util.Locale;
@@ -11,8 +13,7 @@ public class BeezigI18N {
     private static ResourceBundle strings;
 
     public static void init() {
-        Locale currentLocale = Locale.forLanguageTag(Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage()
-                .getLanguageCode().replace('_', '-'));
+        Locale currentLocale = ((LanguageSetting) Settings.LANGUAGE.get().getValue()).getLocaleId();
         try {
             defaults = ResourceBundle.getBundle("lang/language", Locale.US);
             strings = ResourceBundle.getBundle("lang/language", currentLocale);

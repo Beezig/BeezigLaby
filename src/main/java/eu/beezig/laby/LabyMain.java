@@ -57,7 +57,6 @@ public class LabyMain extends LabyModAddon {
         catch (ClassNotFoundException ex) {}
         INSTANCE = new Beezig(true, AddonLoader.getConfigDirectory());
         LABY = getApi();
-        BeezigI18N.init();
         LABY.registerForgeListener(new LabyForgeListener());
         LabyEventListener.init();
         LABY.registerServerSupport(this, new LabyHive());
@@ -71,7 +70,7 @@ public class LabyMain extends LabyModAddon {
     public void init(String addonName, UUID uuid) {
         super.init(addonName, uuid);
         INSTANCE.load(null); // Init is called after onEnable (config is accessible here)
-
+        BeezigI18N.init();
         PlayerMenuEntries.init();
 
         try {
