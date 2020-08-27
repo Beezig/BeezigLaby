@@ -14,6 +14,9 @@ public class BeezigI18N {
 
     public static void init() {
         Locale currentLocale = ((LanguageSetting) Settings.LANGUAGE.get().getValue()).getLocaleId();
+        if(currentLocale == null)
+            currentLocale = Locale.forLanguageTag(Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage()
+                    .getLanguageCode().replace('_', '-'));
         try {
             defaults = ResourceBundle.getBundle("lang/language", Locale.US);
             strings = ResourceBundle.getBundle("lang/language", currentLocale);
