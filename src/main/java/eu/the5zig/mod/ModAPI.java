@@ -37,6 +37,7 @@ import net.labymod.ingamechat.renderer.ChatRenderer;
 import net.labymod.main.LabyMod;
 import net.labymod.main.Source;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.util.IChatComponent;
@@ -194,7 +195,7 @@ public class ModAPI {
 	 * @return true, if the player is currently playing in a world.
 	 */
 	public boolean isInWorld() {
-		return LabyMain.LABY.isIngame();
+		return Minecraft.getMinecraft().currentScreen == null;
 	}
 
 	/**
