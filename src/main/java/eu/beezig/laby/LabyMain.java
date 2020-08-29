@@ -28,6 +28,7 @@ import eu.beezig.laby.evt.LabyForgeListener;
 import eu.beezig.laby.misc.PlayerMenuEntries;
 import eu.beezig.laby.net.LabySessionProvider;
 import eu.the5zig.mod.The5zigAPI;
+import eu.the5zig.mod.modules.StringItem;
 import eu.the5zig.mod.server.GameListenerRegistry;
 import eu.the5zig.util.BeezigI18N;
 import net.labymod.addon.AddonLoader;
@@ -71,8 +72,8 @@ public class LabyMain extends LabyModAddon {
         super.init(addonName, uuid);
         INSTANCE.load(null); // Init is called after onEnable (config is accessible here)
         BeezigI18N.init();
+        for(StringItem item : The5zigAPI.getAPI().getModulesToRegister()) item.registerSettings();
         PlayerMenuEntries.init();
-
         try {
             FORGE = new BeezigForgeMod();
         } catch(Exception ignored) {} // Exception is thrown when the user is on Labymod Vanilla

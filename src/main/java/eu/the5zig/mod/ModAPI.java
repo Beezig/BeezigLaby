@@ -44,10 +44,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ResourceLocation;
 import eu.beezig.laby.LabyMain;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Main API class.
@@ -102,6 +99,7 @@ public class ModAPI {
 	 */
 
 	private int sortingCount = 0;
+	private Queue<StringItem> modulesToRegister = new ArrayDeque<>();
 	public void registerModuleItem(Object plugin, String key, Class<? extends StringItem> moduleItem, String category) {
 		if(unsupportedModules.contains(key)) return;
 		try {
@@ -109,10 +107,14 @@ public class ModAPI {
 		    item.setKey(key);
 		    item.setSortingId(sortingCount++);
 			LabyMain.LABY.registerModule(item);
-			item.registerSettings();
+			modulesToRegister.add(item);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Queue<StringItem> getModulesToRegister() {
+		return modulesToRegister;
 	}
 
 	/**
