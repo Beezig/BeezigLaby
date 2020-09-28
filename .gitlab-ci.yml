@@ -10,13 +10,13 @@ stages:
 image: gradle:latest
 cache: &globalcache
   paths:
-    - /home/gradle/.gradle
+    - .gradle-home
   policy: pull
 
 prepare ci workspace:
   stage: prepare
   script:
-    - ./gradlew setupCiWorkspace
+    - ./gradlew --gradle-user-home "$PWD/.gradle-home" setupCiWorkspace
   cache:
     <<: *globalcache
     policy: pull-push
@@ -24,7 +24,7 @@ prepare ci workspace:
 build:
   stage: build
   script:
-    - ./gradlew build
+    - ./gradlew build --gradle-user-home "$PWD/.gradle-home"
   artifacts:
     paths:
       - build/libs/*.jar
