@@ -1,0 +1,48 @@
+# GitLab CI Configuration
+# Copyright (C) 2020  Beezig Team
+---
+
+stages:
+  - prepare
+  - build
+  - deploy
+
+image: gradle:latest
+cache: &globalcache
+  paths:
+    - .gradle-home
+  policy: pull
+
+prepare ci workspace:
+  stage: prepare
+  script:
+    - ./gradlew --gradle-user-home "$PWD/.gradle-home" setupCiWorkspace
+  cache:
+    <<: *globalcache
+    policy: pull-push
+
+build:
+  stage: build
+  script:
+    - git submodule update --init --remote --recursive
+    - ./gradlew build --gradle-user-home "$PWD/.gradle-home"
+  artifacts:
+    paths:
+      - build/libs/*.jar
+    expire_in: never
+
+deploy version:
+  image: alpine:latest
+  stage: deploy
+  before_script:
+    - apk add openssh git jq bash coreutils
+  script:
+    - chmod go= "$DEPLOY_KEY"
+    - mkdir -p ~/.ssh/ || true
+    - ssh-keyscan -H 'gitlab.com' >> ~/.ssh/known_hosts
+    - ssh-agent bash -c "ssh-add \"$DEPLOY_KEY\"; git clone git@gitlab.com:Beezig/version.git ; version/update-version.sh --module beezig --type beta --version 7.0.0 version/beta.json ; cd version; git add beta.json ; git -c 'user.name=GitLab Deploy' -c 'user.email=noreply@gitlab.com' commit -m 'Update beta version' ; git push origin master"
+  only:
+    refs:
+      - rewrite
+
+...
