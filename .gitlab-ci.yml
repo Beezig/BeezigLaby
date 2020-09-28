@@ -57,5 +57,8 @@ pages:
     expire_in: never
     paths:
       - public/
+  cache:
+    <<: *globalcache
+    policy: pull
 
 ...
