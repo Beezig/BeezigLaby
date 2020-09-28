@@ -9,17 +9,16 @@ stages:
 
 image: gradle:latest
 cache: &globalcache
+  key: "$CI_COMMIT_REF_SLUG"
   paths:
     - .gradle-home
-  policy: pull
+    - build/libs
+  policy: pull-push
 
 prepare ci workspace:
   stage: prepare
   script:
     - ./gradlew --gradle-user-home "$PWD/.gradle-home" setupCiWorkspace
-  cache:
-    <<: *globalcache
-    policy: pull-push
 
 build:
   stage: build
@@ -44,5 +43,19 @@ deploy version:
   only:
     refs:
       - rewrite
+  cache: {}
+
+pages:
+  image: alpine:latest
+  stage: deploy
+  dependencies:
+    - build
+  script:
+    - mkdir public
+    - mv build/libs/*.jar public/
+  artifacts:
+    expire_in: never
+    paths:
+      - public/
 
 ...
