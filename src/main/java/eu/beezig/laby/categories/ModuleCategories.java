@@ -28,7 +28,8 @@ public enum ModuleCategories {
 
     GLOBAL(new ModuleCategory("The Hive", true, new ControlElement.IconData(Material.GLOWSTONE_DUST)), "global"),
     BED(new ModuleCategory("Hive Bedwars", true, new ControlElement.IconData(Material.BED)), "bed"),
-    TIMV(new ModuleCategory("Hive Trouble in Mineville", true, new ControlElement.IconData(Material.STICK)), "timv");
+    TIMV(new ModuleCategory("Hive Trouble in Mineville", true, new ControlElement.IconData(Material.STICK)), "timv"),
+    GRAV(new ModuleCategory("Hive Gravity", true, new ControlElement.IconData(Material.GOLD_BOOTS)), "grav");
 
     private ModuleCategory category;
     private String trigger;
