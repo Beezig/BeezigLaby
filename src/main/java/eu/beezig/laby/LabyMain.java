@@ -20,8 +20,10 @@
 package eu.beezig.laby;
 
 import eu.beezig.core.Beezig;
+import eu.beezig.core.command.commands.BeezigCommand;
 import eu.beezig.core.net.session.NetSessionManager;
 import eu.beezig.forge.BeezigForgeMod;
+import eu.beezig.laby.api.LabyModulesProvider;
 import eu.beezig.laby.categories.ModuleCategories;
 import eu.beezig.laby.evt.LabyEventListener;
 import eu.beezig.laby.evt.LabyForgeListener;
@@ -51,6 +53,7 @@ public class LabyMain extends LabyModAddon {
     public void onEnable() {
         SELF = this;
         NetSessionManager.provider = new LabySessionProvider();
+        BeezigCommand.modulesProvider = new LabyModulesProvider();
         try {
             Class.forName("net.minecraftforge.client.GuiIngameForge");
             IS_FORGE = true;
