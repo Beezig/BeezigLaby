@@ -20,9 +20,11 @@
 package eu.beezig.laby;
 
 import eu.beezig.core.Beezig;
+import eu.beezig.core.api.BeezigForge;
 import eu.beezig.core.command.commands.BeezigCommand;
 import eu.beezig.core.net.session.NetSessionManager;
 import eu.beezig.forge.BeezigForgeMod;
+import eu.beezig.forge.gui.settings.GuiBeezigSettings;
 import eu.beezig.laby.api.LabyModulesProvider;
 import eu.beezig.laby.categories.ModuleCategories;
 import eu.beezig.laby.evt.LabyEventListener;
@@ -36,7 +38,12 @@ import eu.the5zig.util.BeezigI18N;
 import net.labymod.addon.AddonLoader;
 import net.labymod.api.LabyModAPI;
 import net.labymod.api.LabyModAddon;
+import net.labymod.settings.LabyModAddonsGui;
+import net.labymod.settings.elements.BooleanElement;
+import net.labymod.settings.elements.ControlElement;
 import net.labymod.settings.elements.SettingsElement;
+import net.labymod.utils.Material;
+import net.minecraft.client.Minecraft;
 
 import java.util.List;
 import java.util.UUID;
@@ -93,6 +100,12 @@ public class LabyMain extends LabyModAddon {
 
     @Override
     protected void fillSettings(List<SettingsElement> list) {
+        list.add(new BooleanElement("Placeholder", "placeholder", new ControlElement.IconData(Material.STONE)) {
+            @Override
+            public void draw(int x, int y, int maxX, int maxY, int mouseX, int mouseY) {
+                Minecraft.getMinecraft().displayGuiScreen(new GuiBeezigSettings(new LabyModAddonsGui(null), Beezig.cfg().toForge()));
+            }
+        });
     }
 
     public boolean isForge() {
