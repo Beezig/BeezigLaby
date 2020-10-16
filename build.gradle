@@ -42,6 +42,9 @@ repositories {
     maven {
         url "https://libraries.minecraft.net"
     }
+    maven {
+        url  "https://dl.bintray.com/roccodev/maven"
+    }
 }
 
 compileJava {
