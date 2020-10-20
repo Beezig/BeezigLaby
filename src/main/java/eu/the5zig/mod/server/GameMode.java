@@ -43,7 +43,7 @@ public abstract class GameMode {
 	public GameMode() {
 		this.time = -1;
 		killStreakTime = -1;
-		this.state = GameState.STARTING;
+		this.state = GameState.LOBBY;
 		this.respawnable = false;
 	}
 
