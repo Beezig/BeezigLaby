@@ -45,6 +45,9 @@ import net.labymod.settings.elements.SettingsElement;
 import net.labymod.utils.Material;
 import net.minecraft.client.Minecraft;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.OverlappingFileLockException;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,6 +61,26 @@ public class LabyMain extends LabyModAddon {
 
     @Override
     public void onEnable() {
+        RandomAccessFile lock = null;
+        try {
+            lock = new RandomAccessFile("beezig.lock", "rw");
+            if (lock.getChannel().tryLock() == null) {
+                lock.close();
+                throw new IllegalStateException("Another BeezigLaby instance is running");
+            }
+        } catch (Exception ex) {
+            if(ex instanceof IllegalStateException) {
+                if(lock != null) {
+                    try {
+                        lock.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                throw new IllegalStateException("Another BeezigLaby instance is running");
+            }
+            ex.printStackTrace();
+        }
         SELF = this;
         NetSessionManager.provider = new LabySessionProvider();
         BeezigCommand.modulesProvider = new LabyModulesProvider();
@@ -100,7 +123,7 @@ public class LabyMain extends LabyModAddon {
 
     @Override
     protected void fillSettings(List<SettingsElement> list) {
-        list.add(new BooleanElement("Placeholder", "placeholder", new ControlElement.IconData(Material.STONE)) {
+        list.add(new BooleanElement("Placeholder", null, new ControlElement.IconData(Material.STONE)) {
             @Override
             public void draw(int x, int y, int maxX, int maxY, int mouseX, int mouseY) {
                 Minecraft.getMinecraft().displayGuiScreen(new GuiBeezigSettings(new LabyModAddonsGui(null), Beezig.cfg().toForge()));
