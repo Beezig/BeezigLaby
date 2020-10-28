@@ -33,8 +33,7 @@ public class BeezigI18N {
             }
             return key;
         }
-        if(format.length == 0)
-        return strings.getString(key);
+        if(format.length == 0) return strings.getString(key);
         else return String.format(strings.getString(key), format);
     }
 
