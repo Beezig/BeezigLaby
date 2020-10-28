@@ -8,7 +8,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class BeezigI18N {
-
     private static ResourceBundle defaults;
     private static ResourceBundle strings;
 
@@ -17,6 +16,8 @@ public class BeezigI18N {
         if(currentLocale == null)
             currentLocale = Locale.forLanguageTag(Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage()
                     .getLanguageCode().replace('_', '-'));
+        if("iw".equals(currentLocale.getLanguage()) || "ar".equals(currentLocale.getLanguage()))
+            Minecraft.getMinecraft().fontRendererObj.setBidiFlag(true);
         try {
             defaults = ResourceBundle.getBundle("lang/language", Locale.US);
             strings = ResourceBundle.getBundle("lang/language", currentLocale);
