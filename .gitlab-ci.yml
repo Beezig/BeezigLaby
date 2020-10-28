@@ -65,6 +65,7 @@ pages:
     policy: pull
 
 .deployments:
+    image: alpine-latest
     stage: deploy
     before_script:
         - apk add openssh git
