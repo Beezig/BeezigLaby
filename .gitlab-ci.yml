@@ -3,7 +3,6 @@
 ---
 
 stages:
-  - prepare
   - build
   - deploy
 
@@ -18,11 +17,6 @@ cache: &globalcache
     - build/libs
   policy: pull-push
 
-prepare ci workspace:
-  stage: prepare
-  script:
-    - ./gradlew --gradle-user-home "$PWD/.gradle-home" setupCiWorkspace
-
 build:
   stage: build
   script:
@@ -32,6 +26,23 @@ build:
     paths:
       - build/libs/*.jar
     expire_in: never
+
+mirror:
+  allow_failure: true
+  image: alpine:latest
+  stage: deploy
+  environment:
+    name: mirror
+  before_script:
+    - apk add openssh git bash coreutils
+  script:
+    - bash mirror.sh
+  cache:
+    <<: *globalcache
+    policy: pull
+  only:
+    refs:
+      - master
 
 deploy version:
   image: alpine:latest
