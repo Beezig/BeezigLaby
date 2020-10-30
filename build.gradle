@@ -143,7 +143,7 @@ processResources
             from(sourceSets.main.resources.srcDirs) {
                 include '**/*.json'
                 def beezigLabyCommit = "git rev-parse HEAD".execute().text.trim()
-                def beezigLabyCommits = ("git rev-list --count " + "git log --tags -1 --pretty=%H".execute().text.trim() +
+                def beezigLabyCommits = ("git rev-list --count " + "git describe --tags --abbrev=0".execute().text.trim() +
                         "..HEAD").execute().text.trim()
                 def beezigLabyDate = ("git log -1 --pretty=%cI " + beezigLabyCommit).execute().text.trim()
 
@@ -154,7 +154,7 @@ processResources
                                                beeziglabydate: beezigLabyDate])
 
                 def beezigForgeCommit = "git --git-dir BeezigForge/.git rev-parse HEAD".execute().text.trim()
-                def beezigForgeCommits = ("git --git-dir BeezigForge/.git rev-list --count " + "git --git-dir BeezigForge/.git log --tags -1 --pretty=%H".execute().text.trim() +
+                def beezigForgeCommits = ("git --git-dir BeezigForge/.git rev-list --count " + "git --git-dir BeezigForge/.git describe --tags --abbrev=0".execute().text.trim() +
                         "..HEAD").execute().text.trim()
                 def beezigForgeDate = ("git --git-dir BeezigForge/.git log -1 --pretty=%cI " + beezigForgeCommit).execute().text.trim()
 
