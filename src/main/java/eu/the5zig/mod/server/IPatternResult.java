@@ -24,6 +24,7 @@ import java.util.List;
 public class IPatternResult {
 
 	private final List<String> result;
+	private boolean ignore = false;
 
 	public IPatternResult(final List<String> result) {
 		this.result = result;
@@ -38,6 +39,14 @@ public class IPatternResult {
 			return "";
 		}
 		return this.result.get(index);
+	}
+
+	public void ignoreMessage(boolean ignore) {
+		this.ignore = ignore;
+	}
+
+	public boolean shouldIgnore() {
+		return ignore;
 	}
 
 	@Override

@@ -19,41 +19,78 @@
 
 package eu.beezig.laby;
 
-import eu.beezig.forge.API;
-import eu.beezig.forge.api.AutovoteAPIImpl;
-import eu.beezig.forge.api.BeezigAPIImpl;
-import eu.beezig.forge.init.ClassFinder;
+import eu.beezig.core.Beezig;
+import eu.beezig.core.api.BeezigForge;
+import eu.beezig.core.command.commands.BeezigCommand;
+import eu.beezig.core.net.session.NetSessionManager;
+import eu.beezig.forge.BeezigForgeMod;
+import eu.beezig.forge.gui.settings.GuiBeezigSettings;
+import eu.beezig.laby.api.LabyModulesProvider;
 import eu.beezig.laby.categories.ModuleCategories;
 import eu.beezig.laby.evt.LabyEventListener;
 import eu.beezig.laby.evt.LabyForgeListener;
-import eu.beezig.laby.misc.SettingsLoader;
+import eu.beezig.laby.misc.PlayerMenuEntries;
+import eu.beezig.laby.net.LabySessionProvider;
 import eu.the5zig.mod.The5zigAPI;
+import eu.the5zig.mod.modules.StringItem;
 import eu.the5zig.mod.server.GameListenerRegistry;
 import eu.the5zig.util.BeezigI18N;
 import net.labymod.addon.AddonLoader;
 import net.labymod.api.LabyModAPI;
 import net.labymod.api.LabyModAddon;
+import net.labymod.settings.LabyModAddonsGui;
+import net.labymod.settings.elements.BooleanElement;
+import net.labymod.settings.elements.ControlElement;
 import net.labymod.settings.elements.SettingsElement;
-import eu.beezig.core.BeezigMain;
-import eu.beezig.forge.BeezigForgeMod;
-import eu.beezig.laby.misc.PlayerMenuEntries;
+import net.labymod.utils.Material;
+import net.minecraft.client.Minecraft;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.OverlappingFileLockException;
 import java.util.List;
 import java.util.UUID;
 
 public class LabyMain extends LabyModAddon {
 
-    public static BeezigMain INSTANCE;
+    public static Beezig INSTANCE;
     public static LabyModAPI LABY;
     public static BeezigForgeMod FORGE;
     public static LabyMain SELF;
+    public static boolean IS_FORGE = false;
 
     @Override
     public void onEnable() {
+        RandomAccessFile lock = null;
+        try {
+            lock = new RandomAccessFile("beezig.lock", "rw");
+            if (lock.getChannel().tryLock() == null) {
+                lock.close();
+                throw new IllegalStateException("Another BeezigLaby instance is running");
+            }
+        } catch (Exception ex) {
+            if(ex instanceof IllegalStateException) {
+                if(lock != null) {
+                    try {
+                        lock.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                throw new IllegalStateException("Another BeezigLaby instance is running");
+            }
+            ex.printStackTrace();
+        }
         SELF = this;
-        INSTANCE = new BeezigMain(true, AddonLoader.getConfigDirectory());
+        NetSessionManager.provider = new LabySessionProvider();
+        BeezigCommand.modulesProvider = new LabyModulesProvider();
+        try {
+            Class.forName("net.minecraftforge.client.GuiIngameForge");
+            IS_FORGE = true;
+        }
+        catch (ClassNotFoundException ex) {}
+        INSTANCE = new Beezig(true, AddonLoader.getConfigDirectory());
         LABY = getApi();
-        BeezigI18N.init();
         LABY.registerForgeListener(new LabyForgeListener());
         LabyEventListener.init();
         LABY.registerServerSupport(this, new LabyHive());
@@ -66,13 +103,13 @@ public class LabyMain extends LabyModAddon {
     @Override
     public void init(String addonName, UUID uuid) {
         super.init(addonName, uuid);
-        INSTANCE.onLoad(null); // Init is called after onEnable (config is accessible here)
-
+        INSTANCE.load(null); // Init is called after onEnable (config is accessible here)
+        BeezigI18N.init();
+        for(StringItem item : The5zigAPI.getAPI().getModulesToRegister()) item.registerSettings();
         PlayerMenuEntries.init();
-
         try {
             FORGE = new BeezigForgeMod();
-        } catch(Exception ignored) { } // Exception is thrown when the user is on Labymod Vanilla
+        } catch(Exception ignored) {} // Exception is thrown when the user is on Labymod Vanilla
     }
 
     @Override
@@ -86,31 +123,15 @@ public class LabyMain extends LabyModAddon {
 
     @Override
     protected void fillSettings(List<SettingsElement> list) {
-        SettingsLoader.addSettings(list);
+        list.add(new BooleanElement("Placeholder", null, new ControlElement.IconData(Material.STONE)) {
+            @Override
+            public void draw(int x, int y, int maxX, int maxY, int mouseX, int mouseY) {
+                Minecraft.getMinecraft().displayGuiScreen(new GuiBeezigSettings(new LabyModAddonsGui(null), Beezig.cfg().toForge()));
+            }
+        });
     }
 
     public boolean isForge() {
         return FORGE != null;
-    }
-
-    static void initApi() {
-        try {
-            ClassFinder.init();
-
-            Class api = ClassFinder.findClass("eu.beezig.core.api.BeezigAPI");
-
-            Object privInst = api.getMethod("get")
-                    .invoke(null);
-            API.inst = BeezigAPIImpl.fromObject(privInst);
-
-            API.autovote = AutovoteAPIImpl.fromObject(((Class)(api.getMethod("getAutovoter").invoke(privInst))).newInstance());
-
-            api.getMethod("registerListener", Object.class)
-                    .invoke(privInst,
-                            Class.forName("eu.beezig.forge.listener.ForgeListenerImpl", true, LabyMain.class.getClassLoader())
-                                    .newInstance());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

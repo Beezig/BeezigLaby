@@ -17,28 +17,36 @@
 package eu.the5zig.mod;
 
 import com.mojang.authlib.GameProfile;
+import eu.beezig.core.util.task.WorldTask;
 import eu.the5zig.mod.gui.IOverlay;
+import eu.the5zig.mod.gui.LabyOverlay;
 import eu.the5zig.mod.gui.ingame.ItemStack;
 import eu.the5zig.mod.gui.ingame.Scoreboard;
 import eu.the5zig.mod.modules.GameModeItem;
+import eu.the5zig.mod.modules.StringItem;
 import eu.the5zig.mod.plugin.PluginManager;
 import eu.the5zig.mod.render.Formatting;
 import eu.the5zig.mod.render.RenderHelper;
 import eu.the5zig.mod.server.ServerInstance;
 import eu.the5zig.mod.util.NetworkPlayerInfo;
 import eu.the5zig.mod.util.PlayerGameMode;
+import eu.the5zig.mod.util.component.ChatComponentBuilder;
+import eu.the5zig.mod.util.component.MessageComponent;
 import eu.the5zig.util.BeezigI18N;
 import net.labymod.core.LabyModCore;
+import net.labymod.ingamechat.renderer.ChatLine;
+import net.labymod.ingamechat.renderer.ChatRenderer;
+import net.labymod.main.LabyMod;
 import net.labymod.main.Source;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ResourceLocation;
 import eu.beezig.laby.LabyMain;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Main API class.
@@ -72,7 +80,7 @@ public class ModAPI {
 	 * @return true, if we are in a forge environment.
 	 */
 	public boolean isForgeEnvironment() {
-		return false;
+		return LabyMain.IS_FORGE;
 	}
 
 	/**
@@ -93,17 +101,22 @@ public class ModAPI {
 	 */
 
 	private int sortingCount = 0;
-	public void registerModuleItem(Object plugin, String key, Class<? extends GameModeItem> moduleItem, String category) {
+	private Queue<StringItem> modulesToRegister = new ArrayDeque<>();
+	public void registerModuleItem(Object plugin, String key, Class<? extends StringItem> moduleItem, String category) {
 		if(unsupportedModules.contains(key)) return;
 		try {
-		    GameModeItem item = moduleItem.newInstance();
+			StringItem item = moduleItem.newInstance();
 		    item.setKey(key);
 		    item.setSortingId(sortingCount++);
 			LabyMain.LABY.registerModule(item);
-			item.registerSettings();
+			modulesToRegister.add(item);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Queue<StringItem> getModulesToRegister() {
+		return modulesToRegister;
 	}
 
 	/**
@@ -168,7 +181,7 @@ public class ModAPI {
 	 * @return a new overlay
 	 */
 	public IOverlay createOverlay() {
-		return null;
+		return new LabyOverlay();
 	}
 
 	/**
@@ -186,7 +199,7 @@ public class ModAPI {
 	 * @return true, if the player is currently playing in a world.
 	 */
 	public boolean isInWorld() {
-		return LabyMain.LABY.isIngame();
+		return Minecraft.getMinecraft().currentScreen == null;
 	}
 
 	/**
@@ -213,7 +226,8 @@ public class ModAPI {
 	 * @param message the message that should be sent.
 	 */
 	public void messagePlayerInSecondChat(String message) {
-		messagePlayer(message);
+		ChatRenderer chat = LabyMod.getInstance().getIngameChatManager().getSecond();
+		WorldTask.submit(() -> chat.addChatLine(message, true, null, null, Minecraft.getMinecraft().ingameGUI.getUpdateCounter(), chat.getChatLines().size(), null, false));
 	}
 
 	/**
@@ -326,5 +340,12 @@ public class ModAPI {
 	    return new ItemStack(LabyModCore.getMinecraft().getMainHandItem());
     }
 
-
+	public void messagePlayerComponent(MessageComponent component, boolean secondChat) {
+		if(secondChat) {
+			IChatComponent cmp = ChatComponentBuilder.fromInterface(component);
+			ChatRenderer chat = LabyMod.getInstance().getIngameChatManager().getSecond();
+			chat.addChatLine(cmp.getFormattedText(), true, null, cmp, Minecraft.getMinecraft().ingameGUI.getUpdateCounter(), chat.getChatLines().size(), null, false);
+		}
+		else Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(ChatComponentBuilder.fromInterface(component));
+	}
 }

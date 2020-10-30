@@ -1,6 +1,8 @@
 [submodule "Beezig"]
 	path = Beezig
-	url = https://github.com/Beezig/Beezig.git
+	url = https://gitlab.com/Beezig/Beezig.git
+	branch = master
 [submodule "BeezigForge"]
 	path = BeezigForge
-	url = https://github.com/Beezig/BeezigForge.git
+	url = https://gitlab.com/Beezig/BeezigForge.git
+	branch = master

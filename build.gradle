@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 apply plugin: 'java'
 // For those who want the bleeding edge
 buildscript {
@@ -17,10 +19,33 @@ version = "1.0"
 group= "eu.beezig.laby" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "BeezigLaby"
 
-configurations {
-    embed
+allprojects {
+    project.ext.set("laby", true)
 }
 
+compileJava {
+    options.compilerArgs << '-g'
+}
+
+
+configurations {
+    embed
+    compile.extendsFrom embed
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven {
+        url "https://dl.bintray.com/5zig-reborn/maven"
+    }
+    maven {
+        url "https://libraries.minecraft.net"
+    }
+    maven {
+        url  "https://dl.bintray.com/roccodev/maven"
+    }
+}
 
 compileJava {
     sourceCompatibility = '1.8'
@@ -28,10 +53,16 @@ compileJava {
     options.encoding = 'UTF-8'
 }
 
+jar {
+    manifest.attributes(
+            'FMLCorePlugin': 'net.labymod.core.asm.LabyModCoreMod',
+            'FMLCorePluginContainsFMLMod': 'true'
+    )
+}
 
 reobf {
     jar {
-        useNotchSrg()
+        if(System.getProperty("FORGESRG") == null) useNotchSrg()
     }
 }
 
@@ -39,10 +70,10 @@ sourceSets {
     main {
         java {
             srcDirs 'src/main/java'
-            srcDirs 'Beezig/src'
+            srcDirs 'Beezig/src/main/java'
             srcDirs 'BeezigForge/src/main/java'
-            srcDirs 'Beezig/hive-api-wrapper/src/main/java'
-
+            // Don't use BeezigForge's ASM, for BeezigLaby has its own ASM transformers
+            exclude 'eu/beezig/forge/asm/**'
         }
 
         resources {
@@ -65,25 +96,32 @@ sourceSets {
 minecraft {
     version = "1.8.9-11.15.1.1722"
     runDir = "run"
-
-    // the mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   snapshot are built nightly.
-    // stable_#            stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not allways work.
-    // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "stable_20"
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    mappings = "stable_22"
+    makeObfSourceJar = false
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    embed(project(':Beezig')) {
+        exclude module: 'plugin-api'
+        exclude group: 'eu.beezig'
+        exclude module: 'lwjgl'
+        exclude group: 'asm'
+    }
+    compile group: 'org.ow2.asm', name: 'asm-debug-all', version: '5.2'
+}
 
-    compile group: 'net.java.dev.jna', name: 'jna', version: '4.5.0'
-    compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.1'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
-
-    embed group: 'com.kohlschutter.junixsocket', name: 'junixsocket-native-common', version: '2.0.4'
+jar {
+    from {
+        duplicatesStrategy DuplicatesStrategy.EXCLUDE
+        configurations.embed.collect {
+            exclude 'com/google/'
+            exclude 'org/apache/'
+            exclude 'com/mojang/'
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    rename 'language_he_IL.properties', 'language_iw_IL.properties'
 }
 
 processResources
@@ -101,6 +139,32 @@ processResources
                 expand 'version': project.version, 'mcversion': project.minecraft.version
             }
 
+            // Create version.json
+            from(sourceSets.main.resources.srcDirs) {
+                include '**/*.json'
+                def beezigLabyCommit = "git rev-parse HEAD".execute().text.trim()
+                def beezigLabyCommits = ("git rev-list --count " + "git log --tags -1 --pretty=%H".execute().text.trim() +
+                        "..HEAD").execute().text.trim()
+                def beezigLabyDate = ("git log -1 --pretty=%cI " + beezigLabyCommit).execute().text.trim()
+
+                filter(ReplaceTokens, tokens: [beeziglabyversion: '7.0.0',
+                                               beeziglabycommit: beezigLabyCommit,
+                                               beeziglabycommits: beezigLabyCommits,
+                                               beeziglabytype: 'beta',
+                                               beeziglabydate: beezigLabyDate])
+
+                def beezigForgeCommit = "git --git-dir BeezigForge/.git rev-parse HEAD".execute().text.trim()
+                def beezigForgeCommits = ("git --git-dir BeezigForge/.git rev-list --count " + "git --git-dir BeezigForge/.git log --tags -1 --pretty=%H".execute().text.trim() +
+                        "..HEAD").execute().text.trim()
+                def beezigForgeDate = ("git --git-dir BeezigForge/.git log -1 --pretty=%cI " + beezigForgeCommit).execute().text.trim()
+
+                filter(ReplaceTokens, tokens: [beezigforgeversion: '7.0.0',
+                                               beezigforgecommit: beezigForgeCommit,
+                                               beezigforgecommits: beezigForgeCommits,
+                                               beezigforgetype: 'beta',
+                                               beezigforgedate: beezigForgeDate])
+            }
+
             // copy everything else, thats not the mcmod.info
             from(sourceSets.main.resources.srcDirs) {
                 exclude 'mcmod.info'
@@ -109,18 +173,6 @@ processResources
                 exclude '**/*.dylib'
                 exclude '**/*.so'
                 exclude '**/*.jnilib'
+                exclude '**/*.json'
             }
-
-            from {
-                configurations.embed.collect {
-                    zipTree(it).matching {
-                        include '**/*.dylib'
-                        include '**/*.jnilib'
-                        include '**/*.so'
-                    }.files
-                }
-            }
-
-
-
         }

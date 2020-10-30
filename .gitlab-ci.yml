@@ -1,0 +1,111 @@
+# GitLab CI Configuration
+# Copyright (C) 2020  Beezig Team
+---
+
+stages:
+  - build
+  - deploy
+
+variables:
+    VERSION: 7.0.0
+
+image: gradle:latest
+cache: &globalcache
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - .gradle-home
+    - build/libs
+  policy: pull-push
+
+build:
+  stage: build
+  script:
+    - git submodule update --init --remote --recursive
+    - ./gradlew build --gradle-user-home "$PWD/.gradle-home"
+  artifacts:
+    paths:
+      - build/libs/*.jar
+    expire_in: never
+
+mirror:
+  allow_failure: true
+  image: alpine:latest
+  stage: deploy
+  environment:
+    name: mirror
+  before_script:
+    - apk add openssh git bash coreutils
+  script:
+    - bash mirror.sh
+  cache:
+    <<: *globalcache
+    policy: pull
+  only:
+    refs:
+      - master
+
+deploy version:
+  image: alpine:latest
+  stage: deploy
+  before_script:
+    - apk add openssh git jq bash coreutils
+  script:
+    - chmod go= "$DEPLOY_KEY"
+    - mkdir -p ~/.ssh/ || true
+    - ssh-keyscan -H 'gitlab.com' >> ~/.ssh/known_hosts
+    - ssh-agent bash -c "ssh-add \"$DEPLOY_KEY\"; git clone git@gitlab.com:Beezig/version.git ; version/update-version.sh --module beezig-laby --type beta --version 7.0.0 version/beta.json ; cd version; git add beta.json ; git -c 'user.name=GitLab Deploy' -c 'user.email=noreply@gitlab.com' commit -m 'Update beta version' ; git push origin master"
+  only:
+    refs:
+      - rewrite
+  cache: {}
+
+pages:
+  image: alpine:latest
+  stage: deploy
+  dependencies:
+    - build
+  script:
+    - mkdir public
+    - mv build/libs/*.jar public/
+  artifacts:
+    expire_in: never
+    paths:
+      - public/
+  cache:
+    <<: *globalcache
+    policy: pull
+
+.deployments:
+    image: alpine:latest
+    stage: deploy
+    before_script:
+        - apk add openssh git
+
+deploy beta:
+    extends: .deployments
+    environment:
+        name: beta
+    script:
+        - chmod go= "$DEPLOYMENTS_KEY"
+        - mkdir -p ~/.ssh/ || true
+        - ssh-keyscan -H 'gitlab.com' >> ~/.ssh/known_hosts
+        - "ssh-agent sh -c \"ssh-add \\\"$DEPLOYMENTS_KEY\\\" ; git clone git@gitlab.com:Beezig/deployments.git ; mkdir -p deployments/beeziglaby-beta || true ; cp build/libs/BeezigLaby*.jar \\\"deployments/beeziglaby-beta/BeezigLaby-$VERSION-$(git rev-list --count $(git describe --tags --abbrev=0)..HEAD)-$(git log -1 --format=%h).jar\\\" ; cd deployments ; git add . ; git -c 'user.name=GitLab Deploy' -c 'user.email=noreply@gitlab.com' commit -m 'deploy: Deploy BeezigLaby Beta' ; git push origin master\""
+    only:
+        - master
+        - rewrite
+    except:
+        - tags
+
+deploy release:
+    extends: .deployments
+    environment:
+        name: release
+    script:
+        - chmod go= "$DEPLOYMENTS_KEY"
+        - mkdir -p ~/.ssh/ || true
+        - ssh-keyscan -H 'gitlab.com' >> ~/.ssh/known_hosts
+        - "ssh-agent sh -c \"ssh-add \\\"$DEPLOYMENTS_KEY\\\" ; git clone git@gitlab.com:Beezig/deployments.git ; mkdir -p deployments/beeziglaby-release || true ; cp build/libs/BeezigLaby*.jar deployments/beeziglaby-release/BeezigLaby-$VERSION.jar ; cd deployments ; git add . ; git -c 'user.name=GitLab Deploy' -c 'user.email=noreply@gitlab.com' commit -m 'deploy: Deploy BeezigLaby Release' ; git push origin master\""
+    when: manual
+    only:
+        - tags
+...

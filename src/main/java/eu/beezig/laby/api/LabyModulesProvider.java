@@ -17,24 +17,15 @@
  * along with BeezigLaby.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package eu.beezig.laby.misc;
+package eu.beezig.laby.api;
 
-import net.labymod.settings.elements.BooleanElement;
-import net.labymod.settings.elements.ControlElement;
-import net.labymod.settings.elements.SettingsElement;
-import net.labymod.utils.Material;
-import eu.beezig.core.settings.Setting;
+import eu.beezig.core.util.modules.IModulesProvider;
+import net.labymod.settings.LabyModModuleEditorGui;
+import net.minecraft.client.Minecraft;
 
-import java.util.List;
-
-public class SettingsLoader {
-
-    public static void addSettings(List<SettingsElement> settings) {
-        for(Setting setting : Setting.values()) {
-            settings.add(new BooleanElement(setting.getBrieferDescription(),
-                    new ControlElement.IconData(Material.valueOf(setting.getLabyIcon())),
-                    setting::setValue, setting.getValue()));
-        }
+public class LabyModulesProvider implements IModulesProvider {
+    @Override
+    public void openModulesGui() {
+        Minecraft.getMinecraft().displayGuiScreen(new LabyModModuleEditorGui(Minecraft.getMinecraft().currentScreen));
     }
-
 }

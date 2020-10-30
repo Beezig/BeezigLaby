@@ -1,29 +1,40 @@
 package eu.the5zig.util;
 
+import eu.beezig.core.config.Settings;
+import eu.beezig.core.config.i18n.LanguageSetting;
 import net.minecraft.client.Minecraft;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class BeezigI18N {
-
-
+    private static ResourceBundle defaults;
     private static ResourceBundle strings;
 
     public static void init() {
-        Locale currentLocale = Locale.forLanguageTag(Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage()
-                .getLanguageCode().replace('_', '-'));
+        Locale currentLocale = ((LanguageSetting) Settings.LANGUAGE.get().getValue()).getLocaleId();
+        if(currentLocale == null)
+            currentLocale = Locale.forLanguageTag(Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage()
+                    .getLanguageCode().replace('_', '-'));
+        if("iw".equals(currentLocale.getLanguage()) || "ar".equals(currentLocale.getLanguage()))
+            Minecraft.getMinecraft().fontRendererObj.setBidiFlag(true);
         try {
-            strings = ResourceBundle.getBundle("language", currentLocale);
+            defaults = ResourceBundle.getBundle("lang/language", Locale.US);
+            strings = ResourceBundle.getBundle("lang/language", currentLocale);
         } catch(Exception e) {
-            strings = ResourceBundle.getBundle("language", Locale.US);
+            strings = ResourceBundle.getBundle("lang/language", Locale.US);
         }
-        System.out.println("Strings\n\n\n" + strings + "\n\n\n");
     }
 
     public static String s(String key, Object... format) {
-        if(format.length == 0)
-        return strings.getString(key);
+        if(!strings.containsKey(key)) {
+            if(defaults.containsKey(key)) {
+                if(format.length == 0) return defaults.getString(key);
+                else return String.format(defaults.getString(key), format);
+            }
+            return key;
+        }
+        if(format.length == 0) return strings.getString(key);
         else return String.format(strings.getString(key), format);
     }
 

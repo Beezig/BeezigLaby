@@ -19,14 +19,11 @@
 
 package eu.beezig.laby.misc;
 
-import eu.beezig.core.ActiveGame;
-import eu.beezig.core.CommandManager;
-import eu.beezig.core.IHive;
-import eu.beezig.core.advancedrecords.AdvancedRecords;
-import eu.beezig.core.games.TIMV;
+import eu.beezig.core.server.ServerHive;
+import eu.beezig.core.server.modes.TIMV;
+import eu.beezig.forge.ActiveGame;
 import eu.beezig.laby.gui.ReportReasonScreen;
 import eu.the5zig.mod.The5zigAPI;
-import io.netty.util.internal.ThreadLocalRandom;
 import net.labymod.main.LabyMod;
 import net.labymod.user.User;
 import net.labymod.user.gui.UserActionGui;
@@ -37,10 +34,11 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class PlayerMenuEntries {
 
-    public static UserActionEntry STATS, TIMV_TEST, REPORT, DR_PB, DR_CWR;
+    public static UserActionEntry STATS, TIMV_TEST, REPORT;
 
     public static void init() {
 
@@ -53,7 +51,6 @@ public class PlayerMenuEntries {
         STATS = new UserActionEntry("[Beezig] Show stats", UserActionEntry.EnumActionType.NONE, null, new UserActionEntry.ActionExecutor() {
             @Override
             public void execute(User user, EntityPlayer entityPlayer, NetworkPlayerInfo networkPlayerInfo) {
-                AdvancedRecords.player = networkPlayerInfo.getGameProfile().getName();
                 The5zigAPI.getAPI().sendPlayerMessage("/stats " + networkPlayerInfo.getGameProfile().getName());
             }
 
@@ -66,16 +63,16 @@ public class PlayerMenuEntries {
         TIMV_TEST = new UserActionEntry("[Beezig] Ask to test", UserActionEntry.EnumActionType.NONE, null, new UserActionEntry.ActionExecutor() {
             @Override
             public void execute(User user, EntityPlayer entityPlayer, NetworkPlayerInfo networkPlayerInfo) {
-                int random = ThreadLocalRandom.current().ints(0, TIMV.testRequests.size()).distinct()
+                /*int random = ThreadLocalRandom.current().ints(0, TIMV.testRequests.size()).distinct()
                         .filter(i -> i != TIMV.lastTestMsg).findFirst().getAsInt();
                 TIMV.lastTestMsg = random;
                 The5zigAPI.getAPI().sendPlayerMessage(TIMV.testRequests.get(random).replaceAll("\\{p\\}",
-                        networkPlayerInfo.getGameProfile().getName()));
+                        networkPlayerInfo.getGameProfile().getName())); */ // TODO Add back when TIMV test messages are supported
             }
 
             @Override
             public boolean canAppear(User user, EntityPlayer entityPlayer, NetworkPlayerInfo networkPlayerInfo) {
-                return ActiveGame.is("timv");
+                return eu.beezig.core.util.ActiveGame.get() instanceof TIMV;
             }
         });
 
@@ -87,39 +84,13 @@ public class PlayerMenuEntries {
 
             @Override
             public boolean canAppear(User user, EntityPlayer entityPlayer, NetworkPlayerInfo networkPlayerInfo) {
-                return The5zigAPI.getAPI().getActiveServer() instanceof IHive;
-            }
-        });
-
-        DR_PB = new UserActionEntry("[Beezig] Show Personal Best", UserActionEntry.EnumActionType.NONE, null, new UserActionEntry.ActionExecutor() {
-            @Override
-            public void execute(User user, EntityPlayer entityPlayer, NetworkPlayerInfo networkPlayerInfo) {
-                CommandManager.dispatchCommand("/pb " + networkPlayerInfo.getGameProfile().getName());
-            }
-
-            @Override
-            public boolean canAppear(User user, EntityPlayer entityPlayer, NetworkPlayerInfo networkPlayerInfo) {
-                return ActiveGame.is("dr");
-            }
-        });
-
-        DR_CWR = new UserActionEntry("[Beezig] Show Best map", UserActionEntry.EnumActionType.NONE, null, new UserActionEntry.ActionExecutor() {
-            @Override
-            public void execute(User user, EntityPlayer entityPlayer, NetworkPlayerInfo networkPlayerInfo) {
-                CommandManager.dispatchCommand("/cwr " + networkPlayerInfo.getGameProfile().getName());
-            }
-
-            @Override
-            public boolean canAppear(User user, EntityPlayer entityPlayer, NetworkPlayerInfo networkPlayerInfo) {
-                return ActiveGame.is("dr");
+                return The5zigAPI.getAPI().getActiveServer() instanceof ServerHive;
             }
         });
 
         entries.add(STATS);
         entries.add(TIMV_TEST);
         entries.add(REPORT);
-        entries.add(DR_PB);
-        entries.add(DR_CWR);
 
         } catch(Exception ignored) {}
     }

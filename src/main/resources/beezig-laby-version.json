@@ -1,0 +1,7 @@
+{
+  "version": "@beeziglabyversion@",
+  "commit": "@beeziglabycommit@",
+  "commits": @beeziglabycommits@,
+  "type": "@beeziglabytype@",
+  "date": "@beeziglabydate@"
+}
