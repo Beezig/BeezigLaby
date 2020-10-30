@@ -17,6 +17,7 @@
 package eu.the5zig.mod;
 
 import com.mojang.authlib.GameProfile;
+import eu.beezig.core.util.task.WorldTask;
 import eu.the5zig.mod.gui.IOverlay;
 import eu.the5zig.mod.gui.LabyOverlay;
 import eu.the5zig.mod.gui.ingame.ItemStack;
@@ -33,6 +34,7 @@ import eu.the5zig.mod.util.component.ChatComponentBuilder;
 import eu.the5zig.mod.util.component.MessageComponent;
 import eu.the5zig.util.BeezigI18N;
 import net.labymod.core.LabyModCore;
+import net.labymod.ingamechat.renderer.ChatLine;
 import net.labymod.ingamechat.renderer.ChatRenderer;
 import net.labymod.main.LabyMod;
 import net.labymod.main.Source;
@@ -225,7 +227,7 @@ public class ModAPI {
 	 */
 	public void messagePlayerInSecondChat(String message) {
 		ChatRenderer chat = LabyMod.getInstance().getIngameChatManager().getSecond();
-		chat.addChatLine(message, true, null, null, Minecraft.getMinecraft().ingameGUI.getUpdateCounter(), chat.getChatLines().size(), null, false);
+		WorldTask.submit(() -> chat.addChatLine(message, true, null, null, Minecraft.getMinecraft().ingameGUI.getUpdateCounter(), chat.getChatLines().size(), null, false));
 	}
 
 	/**
