@@ -31,6 +31,7 @@ mirror:
   allow_failure: true
   image: alpine:latest
   stage: deploy
+  interruptible: true
   environment:
     name: mirror
   before_script:
@@ -47,6 +48,7 @@ mirror:
 deploy version:
   image: alpine:latest
   stage: deploy
+  interruptible: true
   before_script:
     - apk add openssh git jq bash coreutils
   script:
@@ -62,6 +64,7 @@ deploy version:
 .deployments:
     image: alpine:latest
     stage: deploy
+    interruptible: true
     before_script:
         - apk add openssh git
 
