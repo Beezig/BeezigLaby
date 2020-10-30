@@ -5,4 +5,4 @@
 [submodule "BeezigForge"]
 	path = BeezigForge
 	url = https://gitlab.com/Beezig/BeezigForge.git
-	branch = rewrite
+	branch = master
