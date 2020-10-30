@@ -59,22 +59,6 @@ deploy version:
       - master
   cache: {}
 
-pages:
-  image: alpine:latest
-  stage: deploy
-  dependencies:
-    - build
-  script:
-    - mkdir public
-    - mv build/libs/*.jar public/
-  artifacts:
-    expire_in: never
-    paths:
-      - public/
-  cache:
-    <<: *globalcache
-    policy: pull
-
 .deployments:
     image: alpine:latest
     stage: deploy
