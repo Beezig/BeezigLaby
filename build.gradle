@@ -150,7 +150,7 @@ processResources
                 filter(ReplaceTokens, tokens: [beeziglabyversion: '7.0.0-rc1',
                                                beeziglabycommit: beezigLabyCommit,
                                                beeziglabycommits: beezigLabyCommits,
-                                               beeziglabytype: 'beta',
+                                               beeziglabytype: 'release',
                                                beeziglabydate: beezigLabyDate])
 
                 def beezigForgeCommit = "git --git-dir BeezigForge/.git rev-parse HEAD".execute().text.trim()
@@ -161,7 +161,7 @@ processResources
                 filter(ReplaceTokens, tokens: [beezigforgeversion: '7.0.0-rc1',
                                                beezigforgecommit: beezigForgeCommit,
                                                beezigforgecommits: beezigForgeCommits,
-                                               beezigforgetype: 'beta',
+                                               beezigforgetype: 'release',
                                                beezigforgedate: beezigForgeDate])
             }
 
