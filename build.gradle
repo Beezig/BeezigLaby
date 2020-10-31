@@ -147,7 +147,7 @@ processResources
                         "..HEAD").execute().text.trim()
                 def beezigLabyDate = ("git log -1 --pretty=%cI " + beezigLabyCommit).execute().text.trim()
 
-                filter(ReplaceTokens, tokens: [beeziglabyversion: '7.0.0',
+                filter(ReplaceTokens, tokens: [beeziglabyversion: '7.0.0-rc1',
                                                beeziglabycommit: beezigLabyCommit,
                                                beeziglabycommits: beezigLabyCommits,
                                                beeziglabytype: 'beta',
@@ -158,7 +158,7 @@ processResources
                         "..HEAD").execute().text.trim()
                 def beezigForgeDate = ("git --git-dir BeezigForge/.git log -1 --pretty=%cI " + beezigForgeCommit).execute().text.trim()
 
-                filter(ReplaceTokens, tokens: [beezigforgeversion: '7.0.0',
+                filter(ReplaceTokens, tokens: [beezigforgeversion: '7.0.0-rc1',
                                                beezigforgecommit: beezigForgeCommit,
                                                beezigforgecommits: beezigForgeCommits,
                                                beezigforgetype: 'beta',
