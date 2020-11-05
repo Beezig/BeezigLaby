@@ -7,7 +7,7 @@ stages:
   - deploy
 
 variables:
-    VERSION: 7.0.0-rc1
+    VERSION: 7.0.0-rc2
 
 image: gradle:latest
 cache: &globalcache
