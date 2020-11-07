@@ -13,7 +13,6 @@ cd unzipped/src/main/resources
 echo "public class Dummy {}" > ../java/Dummy.java
 unzip BeezigLaby-*.jar
 rm BeezigLaby-*.jar
-rm -rf META-INF
 cd ../../../
 cp -r ../../../libs .
 touch PROVIDE
