@@ -147,7 +147,7 @@ processResources
                         "..HEAD").execute().text.trim()
                 def beezigLabyDate = ("git log -1 --pretty=%cI " + beezigLabyCommit).execute().text.trim()
 
-                filter(ReplaceTokens, tokens: [beeziglabyversion: '7.0.0',
+                filter(ReplaceTokens, tokens: [beeziglabyversion: '7.0.1',
                                                beeziglabycommit: beezigLabyCommit,
                                                beeziglabycommits: beezigLabyCommits,
                                                beeziglabytype: 'release',
