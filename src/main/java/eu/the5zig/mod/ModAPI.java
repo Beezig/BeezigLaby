@@ -18,11 +18,11 @@ package eu.the5zig.mod;
 
 import com.mojang.authlib.GameProfile;
 import eu.beezig.core.util.task.WorldTask;
+import eu.beezig.laby.LabyMain;
 import eu.the5zig.mod.gui.IOverlay;
 import eu.the5zig.mod.gui.LabyOverlay;
 import eu.the5zig.mod.gui.ingame.ItemStack;
 import eu.the5zig.mod.gui.ingame.Scoreboard;
-import eu.the5zig.mod.modules.GameModeItem;
 import eu.the5zig.mod.modules.StringItem;
 import eu.the5zig.mod.plugin.PluginManager;
 import eu.the5zig.mod.render.Formatting;
@@ -34,17 +34,14 @@ import eu.the5zig.mod.util.component.ChatComponentBuilder;
 import eu.the5zig.mod.util.component.MessageComponent;
 import eu.the5zig.util.BeezigI18N;
 import net.labymod.core.LabyModCore;
-import net.labymod.ingamechat.renderer.ChatLine;
 import net.labymod.ingamechat.renderer.ChatRenderer;
 import net.labymod.main.LabyMod;
 import net.labymod.main.Source;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ResourceLocation;
-import eu.beezig.laby.LabyMain;
 
 import java.util.*;
 
@@ -59,6 +56,7 @@ public class ModAPI {
 	private final List<String> unsupportedModules = Arrays.asList(
 			"caicooldowns", "labexperiments", "lablb", "gravstages"
 	);
+	private RenderHelper renderHelper = new RenderHelper();
 
 	/**
 	 * @return the version of the 5zig mod.
@@ -150,7 +148,7 @@ public class ModAPI {
 	 * @return a class that contains some utility methods for rendering strings and rectangles.
 	 */
 	public RenderHelper getRenderHelper() {
-		return null;
+		return renderHelper;
 	}
 
 	/**

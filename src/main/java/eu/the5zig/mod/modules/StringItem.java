@@ -17,6 +17,7 @@
 package eu.the5zig.mod.modules;
 
 import eu.beezig.core.Beezig;
+import eu.beezig.core.modules.ICustomRender;
 import eu.beezig.core.util.text.Message;
 import eu.beezig.laby.LabyMain;
 import eu.beezig.laby.categories.ModuleCategories;
@@ -40,7 +41,7 @@ import java.util.List;
 public class StringItem extends SimpleModule {
 
 	public static ModuleCategory HIVE;
-	private List<SettingsElement> subs = new ArrayList<>();
+	private final List<SettingsElement> subs = new ArrayList<>();
 	private ModuleItemProperties props;
 	private String key;
 	private int sorting;
@@ -61,6 +62,18 @@ public class StringItem extends SimpleModule {
 			Beezig.logger.error("Exception in shouldRender", ex);
 			return false;
 		}
+	}
+
+	@Override
+	public void draw(double x, double y, double rightX) {
+		if(this instanceof ICustomRender) render((int) x, (int) y, RenderLocation.LEFT, false);
+		else super.draw(x, y, rightX);
+	}
+
+	@Override
+	public double getRawHeight() {
+		if(this instanceof ICustomRender) return getHeight(false);
+		return super.getRawHeight();
 	}
 
 	/**
