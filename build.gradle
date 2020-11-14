@@ -15,7 +15,7 @@ buildscript {
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
-version = "1.0"
+version = "7.1.0"
 group= "eu.beezig.laby" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "BeezigLaby"
 
@@ -147,7 +147,7 @@ processResources
                         "..HEAD").execute().text.trim()
                 def beezigLabyDate = ("git log -1 --pretty=%cI " + beezigLabyCommit).execute().text.trim()
 
-                filter(ReplaceTokens, tokens: [beeziglabyversion: '7.0.1',
+                filter(ReplaceTokens, tokens: [beeziglabyversion: version,
                                                beeziglabycommit: beezigLabyCommit,
                                                beeziglabycommits: beezigLabyCommits,
                                                beeziglabytype: 'release',
@@ -158,7 +158,7 @@ processResources
                         "..HEAD").execute().text.trim()
                 def beezigForgeDate = ("git --git-dir BeezigForge/.git log -1 --pretty=%cI " + beezigForgeCommit).execute().text.trim()
 
-                filter(ReplaceTokens, tokens: [beezigforgeversion: '7.0.1',
+                filter(ReplaceTokens, tokens: [beezigforgeversion: version,
                                                beezigforgecommit: beezigForgeCommit,
                                                beezigforgecommits: beezigForgeCommits,
                                                beezigforgetype: 'release',
