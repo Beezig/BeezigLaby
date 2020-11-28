@@ -91,6 +91,8 @@ public abstract class GameModeItem<T extends GameMode> extends StringItem {
 	 * @return the active game mode instance.
 	 */
 	protected T getGameMode() {
-		return modeClass.cast(The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode());
+		GameMode current = The5zigAPI.getAPI().getActiveServer().getGameListener().getCurrentGameMode();
+		if(current == null || !modeClass.isAssignableFrom(current.getClass())) return null;
+		return modeClass.cast(current);
 	}
 }
