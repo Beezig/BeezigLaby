@@ -14,7 +14,6 @@ cache: &globalcache
   key: "$CI_COMMIT_REF_SLUG"
   paths:
     - .gradle-home
-    - build/libs
   policy: pull-push
 
 build:
