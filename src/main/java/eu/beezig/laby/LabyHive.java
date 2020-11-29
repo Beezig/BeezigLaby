@@ -48,7 +48,7 @@ public class LabyHive extends Server {
 
     LabyHive() {
         super("The Hive", "premium.hivemc.com", "premium.hive.sexy", "hive.sexy", "hivemc.eu", "play.hivemc.com",
-                "premium.hivemc.eu, play.hivemc.eu", "eu.hivemc.com", "hivemc.com");
+                "premium.hivemc.eu, play.hivemc.eu", "eu.hivemc.com", "hivemc.com", "hivemc.us", "j2o.xyz");
     }
 
 
