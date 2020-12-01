@@ -63,7 +63,7 @@ public class LabyMain extends LabyModAddon {
     public void onEnable() {
         RandomAccessFile lock = null;
         try {
-            lock = new RandomAccessFile("beezig.lock", "rw");
+            lock = new RandomAccessFile("beezig-" + Minecraft.getMinecraft().getSession().getPlayerID() + ".lock", "rw");
             if (lock.getChannel().tryLock() == null) {
                 lock.close();
                 throw new IllegalStateException("Another BeezigLaby instance is running");
