@@ -79,15 +79,6 @@ sourceSets {
         resources {
             srcDirs 'src/main/resources'
             srcDirs 'BeezigForge/src/main/resources'
-            srcDirs 'Beezig/src/core/messages'
-            srcDirs 'Beezig/src/lang'
-            srcDirs 'Beezig/src/libraries'
-            srcDirs 'Beezig/src/javazoom/jl/decoder'
-            exclude '**/*.java'
-            exclude '**/*.dll'
-            exclude '**/*.dylib'
-            exclude '**/*.so'
-            exclude '**/*.jnilib'
         }
     }
 
@@ -102,20 +93,17 @@ minecraft {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    embed(project(':Beezig')) {
-        exclude module: 'plugin-api'
-        exclude group: 'eu.beezig'
-        exclude module: 'lwjgl'
-        exclude group: 'asm'
-    }
     compile group: 'org.ow2.asm', name: 'asm-debug-all', version: '5.2'
+    embed(project(':Beezig')) {
+        transitive = false
+    }
 }
 
 jar {
     from {
         duplicatesStrategy DuplicatesStrategy.EXCLUDE
+        project(':Beezig').configurations.embed.collect {it.isDirectory() ? it : zipTree(it)}
         configurations.embed.collect {
-            exclude 'com/google/'
             exclude 'org/apache/'
             exclude 'com/mojang/'
             it.isDirectory() ? it : zipTree(it)
